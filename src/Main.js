@@ -1,20 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect  } from "react";
 import {
-  BrowserRouter as Router,
+  
   Switch,
   Route,
-  Link,
-  useParams,
-  useRouteMatch,
+
+  Redirect,
+  
 } from "react-router-dom";
 import ArticleDescription from "./ArticleDescription";
-import "./ArticleDescription.css";
+import "./CSS/ArticleDescription.css";
 import Article from './Article';
+
+
+const user = {
+  korisnik : true
+}
 
 
 function Main() {
   let [values, setValues] = useState();
   // let [metadata, setMetadata] = useState({});
+console.log(values)
 
   useEffect(() => {
     try {
@@ -31,6 +37,27 @@ function Main() {
   }, []);
 
   return (
+
+    
+<Switch>
+<Route exact path="/login">
+{user.korisnik && <Redirect to={'/register'} />} 
+<h1>login</h1>
+<p>yyou can loginnnnn hereee</p>
+</Route>
+
+<Route exact path="/register">
+{/* {user.korisnik && <Redirect to={'/login'} />}   */}
+<h1>register</h1>
+<p>yyou can register here</p>
+</Route>
+
+<Route exact path="/logout">
+<h1>logout</h1>
+<p>yyou can logout here here</p>
+</Route>
+
+<Route exact path="/all">
     <div
       style={{
         width: 1000,
@@ -45,34 +72,45 @@ function Main() {
 
 
 {/*  */}
+      
       {values &&
         values.map((e) =>{
           return(
-          <>
-            <ArticleDescription data={e.metadata} key={e._id} hover={true}/>
-          
-         <Route path={`/${e.name}`}>  
-         <Article search={e.name}/>
-         </Route>  
-   </>
+          <div key={e._id}>
+            <ArticleDescription data={e.metadata}  hover={true} show={true} /> 
+         </div>
             )
         })}
+
+       <Switch>
+        {values && values.map((e) =>{
+          console.log(e.name)
+          return(
+          <div key={e._id}>
+           
+         <Route exact path={`/${e.name}`}>
+           <h1>{e.name}</h1>  
+         {/* <Article search={e.name}/> */}
+         </Route>  
+       
+         </div>
+            )
+        })}
+         <Route path='/'>
+        <h1>404</h1>
+         </Route>
+        </Switch>
+
       {/* {values && <div>{JSON.stringify(values)}</div> } */}
     </div>
+    </Route>
+
+    </Switch>
+    
   );
 
-  // {/* <div>{JSON.stringify(values)}</div> */}
-  // values.map((e) => {
 
 
-// </Route><Route path={`/${e.name}`}> 
-
-  // return (
-  // <>
-  // <ArticleDescription data={e.metadata} key={e._id}/>
-  //  </>
-  // );
-  // })
 }
 
 export default Main;

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './CSS/index.css';
 import Article from './Article';
 import Footer from "./Footer" ;
 import Main from './Main'
@@ -10,11 +10,14 @@ import { BrowserRouter as Router, Switch, Route, Link , useParams , useRouteMatc
 ReactDOM.render(
   <React.StrictMode>
     <>
-    <Router>
+    <Router> {/* router is here for now , bcs links are in Footer and routes in Main*/} 
+
     <Footer />
     <Main />
-    {/* <Article search="First pos here , obout sql"/> */}
+
     </Router>
+    {/* <Article search="First pos here , obout sql"/> */}
+    
     </>
 
   </React.StrictMode>,

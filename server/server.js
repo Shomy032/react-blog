@@ -14,9 +14,6 @@ const PORT = process.env.PORT || '4002';
 
 const cors = require('cors')
 
-app.listen(PORT , () => {
-  console.log(`i am listening on localhost:${PORT}`)
-})
 
 
 const metadata =  {name : 'Firts post',
@@ -71,6 +68,155 @@ app.get('/blogs/' , cors() /*for now*/,  async (req , res , next) => {
  }
  
 })
+
+const Ajv = require("ajv")
+const ajv = new Ajv()
+
+//schema for login for now , todo : remove username requirment , and hash password
+const schema = {
+  properties: {
+    username: {type: "string"},
+    email: {type: "string"} ,
+    password : {type: "string"}
+
+  },
+  required: ["username" , "email" , "password"],
+  additionalProperties: false
+}
+
+// hasching library
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+
+const users = db.get('users')
+app.post('/login' , cors() , validateJwt , async (req , res ) => {
+  try{
+    const valid = await ajv.validate(schema, req.body)
+   // console.log(valid)
+   // console.log(req.body)
+    if(valid) {
+      
+      const check = await users.findOne({email : req.body.email})
+      if(check){
+        const match = await bcrypt.compare(req.body.password , check.password);
+        console.log(match)
+  
+        if(match){res.status(200).json({message : 'login accepted' , success : true , username : check.username})}
+        else {throw new Error("invalid credentials")}
+    }
+
+      }
+          //  console.log(check);
+      
+    if(!valid) {res.status(400).json({message : 'invalid login schema' ,  success : false})}
+  } catch(err){
+    res.status(400).json({message : err.message , success : false})
+  }
+ 
+})
+
+app.post('/register' , cors() , async (req , res ) => {
+
+  try{
+    const valid = await ajv.validate(schema, req.body)
+ 
+    if(valid) {
+      const checkEmail = await users.findOne({ email : req.body.email })
+      const checkUsername = await users.findOne({ username : req.body.username })
+    
+
+        if(!checkEmail && !checkUsername){
+            
+            bcrypt.hash(req.body.password, 10, async function(err, hash) {
+            if(err){ throw new Error('problem with hash')} // just dev thing , remove in production
+          //  console.log(req.body.password , hash)
+            req.body.password = hash ;
+          //  console.log(req.body.password)
+
+          //insert user to db
+            await users.insert(req.body)
+          // search again for his _id
+         const data =  await users.findOne({ email : req.body.email })
+          const token = sighJWT(data)
+          console.log(data , token)
+          res.status(200).json({message : 'you are registred' ,
+           success : true , username : req.body.username ,
+          access_token : token
+          });
+
+        })}
+        else {throw new Error("email or username is in use")}
+    }
+    if(!valid) {res.status(400).json({message : 'invalid register schema' ,  success : false})}
+  } catch(err){
+    res.status(400).json({message : err.message , success : false})
+  }
+
+
+})
+
+
+
+
+app.listen(PORT , () => {
+  console.log(`i am listening on localhost:${PORT}`)
+})
+
+
+
+// middleware for validating jwt tokens
+ async function validateJwt(req , res , next){
+try{
+  const superSecret ='sahbdvadj17et6732787gyf87oh9viuycUIBY37O7F8WyubfIEB7BbdahusnuuguduidsahbgsbahnsdbsanajdbguyiA3rq8' 
+  const ber = req.headers.authorization.split(' ')[1];
+ // console.log(ber); //def stuff
+  const decoded = jwt.verify(ber, superSecret);
+if(decoded){
+// console.log('decoded :::' ,decoded)  // just for dev
+    res.locals.user = req.body.username;  
+    res.locals.authenticated = true ;
+    console.log("res.locals ::: " , res.locals)
+  next()
+}
+  
+}catch(err){
+ res.status(403).json({message : err.message , messageProduction : "invalid token" , success : false})
+}
+
+}
+
+// pure function for singing jwt 
+const sighJWT =  function signJwt(data){
+
+try {
+  const superSecret = 'sahbdvadj17et6732787gyf87oh9viuycUIBY37O7F8WyubfIEB7BbdahusnuuguduidsahbgsbahnsdbsanajdbguyiA3rq8' 
+
+  const token = jwt.sign({
+    exp: Math.floor(Date.now() / 1000) + (60 * 60), // time in seconds 3600 for 1h or (60 * 60)
+    data: [data.username , data.email , data._id] // hardcoded example
+  }, superSecret);
+
+  return token ;
+} catch(err) {
+  console.log(err)
+}
+
+  }
+
+
+  
+
+  /// just for dev testing
+
+// app.post('/test/jwt' ,  signJwt , async (req , res , next) => {
+//    res.status(201).json({message : "good call" , success : "true"})
+// })
+
+
+
+
+
 
 //  //
 // const a = {

@@ -1,14 +1,10 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route, Link , useParams , useRouteMatch } from "react-router-dom";
 
-function Footer() {
-  const [value, setValue] = useState(false);
 
-  function login(x) {
-    if (value) return null;
-    console.log(x);
-    return x;
-  }
+function Footer() {
+  const [loger, setLoger] = useState(false);
+
 
   return (
     <>
@@ -19,14 +15,13 @@ function Footer() {
           height: 40,
           width: "100%",
           backgroundColor: "red",
+          margin: '0 0 1rem 0'
         }}
       >
         <img src="./favicon.ico" alt="logo" />
-        {!value && <button onClick={() => login("login")}>Login</button>}
-        {!value && (
-          <button onClick={() => console.log("Register")}>Register</button>
-        )}
-        {value && <button onClick={() => console.log("Logout")}>Logout</button>}
+        {!loger && <Link style={{margin : '0 1rem' , backgroundColor : 'blue'}} to="/login">Login</Link> }
+        {!loger && <Link style={{margin : '0 1rem' , backgroundColor : 'blue'}} to="/register">Register</Link>}
+        {loger && <Link style={{margin : '0 1rem' , backgroundColor : 'blue'}} to="/logout">Logout</Link>}
       </div>
     </>
   );

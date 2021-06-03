@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./Article.css";
+import "./CSS/Article.css";
 import ArticleDescription from "./ArticleDescription";
 import { BrowserRouter as Router, Switch, Route, Link , useParams , useRouteMatch } from "react-router-dom";
 
@@ -33,10 +33,10 @@ function Article(props) {
   return (
     <section className="Article">
       {/*  */}
-      <ArticleDescription data={metadata} />
+      <ArticleDescription data={metadata} show={true}/>
       {/*  */}
       {values.map((e) => (
-        <div className="part" key={e.id}>
+        <div className="part" key={e._id}>
           {e.h1 ? <h1>{e.h1}</h1> : null}
           {e.p ? <p>{e.p}</p> : null}
           {e.img_path ? <img src={e.img_path} alt="" /> : null}

@@ -1,5 +1,5 @@
 import React ,{ useState } from 'react' ;
-import './ArticleDescription.css';
+import './CSS/ArticleDescription.css';
 import { BrowserRouter as Router, Switch, Route, Link , useParams , useRouteMatch } from "react-router-dom";
 
 function ArticleDescription(props) {
@@ -7,19 +7,24 @@ function ArticleDescription(props) {
   // not {} its an array
  // const {value , setValue } =  useState('0rem') ;
  const [isShown, setIsShown] = useState('translateY(100%)');
+ const [dis , setDis] = useState(props.show);
+console.log(props.data.name)
+ if(dis === true){
   return (
     <>
    
   <div className='wrap' 
   style={{display : 'flex' ,
-   justifyContent : 'space-between' ,
+   justifyContent : 'space-around' ,
     alignItems : 'center' , 
   flexDirection : 'row-reverse' ,
-  margin : '3rem 0'
+  margin : '1rem 0'
   }}>
 {/* className={`banner ${active ? "active" : ""}` */}   
   <div style={{margin : '0 2rem' , padding : '1rem'}}>
-   {props.data.name && <Link to={`${props.data.name}`}> <h1 className={props.hover ? 'hovered' : '' }>{props.data.name}</h1></Link>}
+   {props.data.name && <Link to={`/${props.data.name}`}> <h1 className={props.hover ? 'hovered' : '' }
+   onClick={() => setDis(false)}
+   >{props.data.name}</h1></Link>}
 
 {/* testing stuff */}
    <Link to={`props.data.name`}>nmaeeeee</Link>
@@ -67,6 +72,10 @@ function ArticleDescription(props) {
  
     </>
   )
+ } else {
+   return null;
+ }
+  
 }
 
 export default ArticleDescription ;

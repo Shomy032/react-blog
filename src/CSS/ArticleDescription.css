@@ -1,5 +1,6 @@
 .wrap {
   outline:  1px  solid black;
+  width: 900px;
 }
 .wrap p ,
  .wrap h1 ,
