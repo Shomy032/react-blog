@@ -11,7 +11,7 @@ function ArticleDescription(props) {
 console.log(props.data.name)
  if(dis === true){
   return (
-    <>
+    <div>
    
   <div className='wrap' 
   style={{display : 'flex' ,
@@ -70,7 +70,7 @@ console.log(props.data.name)
    {/*  */}
   </div>
  
-    </>
+    </div>
   )
  } else {
    return null;

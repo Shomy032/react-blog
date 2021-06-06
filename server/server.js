@@ -5,7 +5,6 @@ app.use(express.json())
 const db = require('monk')('localhost:27017/blog')
 const blogs = db.get('blog-posts')
 
-
 const morgan = require('morgan')
 app.use(morgan('tiny'))
 
@@ -14,6 +13,11 @@ const PORT = process.env.PORT || '4002';
 
 const cors = require('cors')
 
+
+
+app.listen(PORT , () => {
+  console.log(`i am listening on localhost:${PORT}`)
+})
 
 
 const metadata =  {name : 'Firts post',
@@ -54,7 +58,7 @@ app.get('/blogs/:id' , cors() /*for now*/,  async (req , res , next) => {
  
 })
 
-app.get('/blogs/' , cors() /*for now*/,  async (req , res , next) => {
+app.get('/blogs' , cors() /*for now*/,  async (req , res , next) => {
   try{
     const data = await blogs.find({})
     // console.log(data)
@@ -116,8 +120,43 @@ app.post('/login' , cors() , validateJwt , async (req , res ) => {
  
 })
 
-app.post('/register' , cors() , async (req , res ) => {
+// app.use((req, res, next) => {
+//   res.append('Access-Control-Allow-Origin', ['*']);
+//   res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+//   next();
+// });
 
+
+// , (req , res ) =>{
+
+//   try{   
+//     // console.log('req :::' , JSON.stringify(req))
+  
+//     res.set('Access-Control-Allow-Origin' , '*')
+//     res.set('Access-Control-Allow-Methods', 'GET,POST')
+//   }catch(err){
+//   // console.log('err :::' , err)
+//   } finally {
+//     console.log('end')
+//   }
+    
+  
+//   }
+
+// app.options('/register' , cors({origin : "http://localhost:3000"}) )
+
+app.options("/register", function(req, res){
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', '*');
+  res.header('Access-Control-Allow-Headers', '*');
+  res.status(204).send('response from options');
+});
+
+
+app.post('/register' , cors({origin : "http://localhost:3000"}) , async (req , res ) => {
+   
+  // console.log('BODY ::::' ,  JSON.stringify(req.body) ,'HEAD ::::' ,JSON.stringify(req.headers) )
+ 
   try{
     const valid = await ajv.validate(schema, req.body)
  
@@ -159,9 +198,7 @@ app.post('/register' , cors() , async (req , res ) => {
 
 
 
-app.listen(PORT , () => {
-  console.log(`i am listening on localhost:${PORT}`)
-})
+
 
 
 
@@ -205,7 +242,6 @@ try {
   }
 
 
-  
 
   /// just for dev testing
 

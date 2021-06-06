@@ -38,16 +38,16 @@ console.log(values)
 
   return (
 
-    
+    <>
+
+
 <Switch>
 <Route exact path="/login">
-{user.korisnik && <Redirect to={'/register'} />} 
 <h1>login</h1>
 <p>yyou can loginnnnn hereee</p>
 </Route>
 
 <Route exact path="/register">
-{/* {user.korisnik && <Redirect to={'/login'} />}   */}
 <h1>register</h1>
 <p>yyou can register here</p>
 </Route>
@@ -106,7 +106,8 @@ console.log(values)
     </Route>
 
     </Switch>
-    
+
+    </>    
   );
 
 

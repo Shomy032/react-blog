@@ -7,7 +7,7 @@ function Footer() {
 
 
   return (
-    <>
+    <div>
       <div
         className="footer"
         style={{
@@ -23,7 +23,7 @@ function Footer() {
         {!loger && <Link style={{margin : '0 1rem' , backgroundColor : 'blue'}} to="/register">Register</Link>}
         {loger && <Link style={{margin : '0 1rem' , backgroundColor : 'blue'}} to="/logout">Logout</Link>}
       </div>
-    </>
+    </div>
   );
 }
 
