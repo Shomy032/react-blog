@@ -20,30 +20,8 @@ app.listen(PORT , () => {
 })
 
 
-const metadata =  {name : 'Firts post',
-description : 'this is first post' ,
-date : '' ,
-author : 'pera peric' ,
-about_author : '' ,
-picture : '',
-links : [],
-social_links : []
-}
-let part1 = { 
-  h1 : '<script>console.log(\'123\')<script>',
-p : "start",
-img_path : './pictures/test-bl.png'} 
 
-let part2 = {p : '2. p element dsadas ddddddd ddddddd ddddddd dddddd ddddddd ddddd ddddddd dddddddd dasdasd adasd asdas dasdadAa ADdaDadAD adAadADaAD adadad' ,
-h1 : 'asdasdee`11111'} 
-let part3 = {
-img_path : './pictures/test.png',
-p  : "ja sam idiot , bla bla , ja mislim da ce ovaj arital da bud ecoll smrdis nagorana mnogo jebem ti se sam makom svuda i uvek smo na svemu",
-h1 : 'end'
-}
-// blogs.insert({ name : 'Firts post' ,metadata , content : [ part1 , part2 , part3]})
-// blogs.insert({post})
-app.get('/blogs/:id' , cors() /*for now*/,  async (req , res , next) => {
+app.get('/blogs/:id' , cors({origin : "http://localhost:3000"}) /*for now*/,  async (req , res , next) => {
   try{
     const data = await blogs.findOne({name : req.params.id})
     // console.log(data)
@@ -58,7 +36,7 @@ app.get('/blogs/:id' , cors() /*for now*/,  async (req , res , next) => {
  
 })
 
-app.get('/blogs' , cors() /*for now*/,  async (req , res , next) => {
+app.get('/blogs' , cors({origin : "http://localhost:3000"}) /*for now*/,  async (req , res , next) => {
   try{
     const data = await blogs.find({})
     // console.log(data)
@@ -79,7 +57,7 @@ const ajv = new Ajv()
 //schema for login for now , todo : remove username requirment , and hash password
 const schema = {
   properties: {
-    username: {type: "string"},
+    username: {type: "string"}, //todo : remove it later , dont need name for login
     email: {type: "string"} ,
     password : {type: "string"}
 
@@ -94,69 +72,54 @@ const jwt = require('jsonwebtoken');
 
 
 const users = db.get('users')
-app.post('/login' , cors() , validateJwt , async (req , res ) => {
+app.post('/login' , cors({origin : "http://localhost:3000"}) , async (req , res ) => { // todo : remove validating jwt 
   try{
+    console.log(req.body)
     const valid = await ajv.validate(schema, req.body)
-   // console.log(valid)
-   // console.log(req.body)
-    if(valid) {
+          console.log('valid' ,  valid)  
+    if(valid) {  // 1. lvl deep
       
       const check = await users.findOne({email : req.body.email})
-      if(check){
+      console.log('data' , check)
+     
+      if(!check) {throw new Error('there is no user with that email in db')}
+      if(check){  // 2. lvl deep
         const match = await bcrypt.compare(req.body.password , check.password);
-        console.log(match)
-  
+        
+           // if we have match allow login if not throw err
         if(match){res.status(200).json({message : 'login accepted' , success : true , username : check.username})}
-        else {throw new Error("invalid credentials")}
+        else {  // 3. lvl deep
+          console.log('we have no match')
+          throw new Error("invalid credentials")
+        }
+        if(!match) {}
     }
 
       }
-          //  console.log(check);
+          
       
-    if(!valid) {res.status(400).json({message : 'invalid login schema' ,  success : false})}
+   else if(!valid) {res.status(400).json({message : 'invalid login schema' ,  success : false})}
+   
+   
   } catch(err){
+    // console.log(err)
     res.status(400).json({message : err.message , success : false})
   }
  
 })
 
-// app.use((req, res, next) => {
-//   res.append('Access-Control-Allow-Origin', ['*']);
-//   res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-//   next();
-// });
 
-
-// , (req , res ) =>{
-
-//   try{   
-//     // console.log('req :::' , JSON.stringify(req))
-  
-//     res.set('Access-Control-Allow-Origin' , '*')
-//     res.set('Access-Control-Allow-Methods', 'GET,POST')
-//   }catch(err){
-//   // console.log('err :::' , err)
-//   } finally {
-//     console.log('end')
-//   }
-    
-  
-//   }
-
-// app.options('/register' , cors({origin : "http://localhost:3000"}) )
-
+// this is needed bcs retarded browser is sending preflight on POST request , for some reason????????
 app.options("/register", function(req, res){
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', '*');
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.header('Access-Control-Allow-Methods', 'POST');
   res.header('Access-Control-Allow-Headers', '*');
-  res.status(204).send('response from options');
+  res.status(204).send('response from options'); //remove send in development
 });
 
 
 app.post('/register' , cors({origin : "http://localhost:3000"}) , async (req , res ) => {
-   
-  // console.log('BODY ::::' ,  JSON.stringify(req.body) ,'HEAD ::::' ,JSON.stringify(req.headers) )
- 
+   console.log(req.headers , req.body , req.params , req.query)
   try{
     const valid = await ajv.validate(schema, req.body)
  
@@ -169,9 +132,9 @@ app.post('/register' , cors({origin : "http://localhost:3000"}) , async (req , r
             
             bcrypt.hash(req.body.password, 10, async function(err, hash) {
             if(err){ throw new Error('problem with hash')} // just dev thing , remove in production
-          //  console.log(req.body.password , hash)
+          
             req.body.password = hash ;
-          //  console.log(req.body.password)
+          
 
           //insert user to db
             await users.insert(req.body)
@@ -179,9 +142,10 @@ app.post('/register' , cors({origin : "http://localhost:3000"}) , async (req , r
          const data =  await users.findOne({ email : req.body.email })
           const token = sighJWT(data)
           console.log(data , token)
+          res.cookie('access_token', token , { httpOnly: true });
           res.status(200).json({message : 'you are registred' ,
            success : true , username : req.body.username ,
-          access_token : token
+           
           });
 
         })}
@@ -195,29 +159,31 @@ app.post('/register' , cors({origin : "http://localhost:3000"}) , async (req , r
 
 })
 
-
-
-
-
-
+app.get('/cookie' , validateJwt , (req , res) => {
+console.log(res.locals.authenticated , res.locals.user , res.locals.email)
+res.status(418).send('work')
+})
 
 
 // middleware for validating jwt tokens
  async function validateJwt(req , res , next){
 try{
+
   const superSecret ='sahbdvadj17et6732787gyf87oh9viuycUIBY37O7F8WyubfIEB7BbdahusnuuguduidsahbgsbahnsdbsanajdbguyiA3rq8' 
-  const ber = req.headers.authorization.split(' ')[1];
- // console.log(ber); //def stuff
+
+  const ber = req.headers.cookie.split('=')[1]  // parse auth headers , to get token
   const decoded = jwt.verify(ber, superSecret);
+  console.log('decoded'  , decoded)
 if(decoded){
-// console.log('decoded :::' ,decoded)  // just for dev
-    res.locals.user = req.body.username;  
-    res.locals.authenticated = true ;
-    console.log("res.locals ::: " , res.locals)
+  
+    res.locals.user = decoded.data[0];  // data = [username , email , id]
+    res.locals.email = decoded.data[1]; // passing to next middleware
+    res.locals.authenticated = true ;  
+   
   next()
 }
   
-}catch(err){
+}catch(err){              // remove message in production
  res.status(403).json({message : err.message , messageProduction : "invalid token" , success : false})
 }
 
@@ -230,7 +196,7 @@ try {
   const superSecret = 'sahbdvadj17et6732787gyf87oh9viuycUIBY37O7F8WyubfIEB7BbdahusnuuguduidsahbgsbahnsdbsanajdbguyiA3rq8' 
 
   const token = jwt.sign({
-    exp: Math.floor(Date.now() / 1000) + (60 * 60), // time in seconds 3600 for 1h or (60 * 60)
+    exp: Math.floor(Date.now() / 1000) + (60 * 60), // expire time in seconds (60 * 60) = 1h
     data: [data.username , data.email , data._id] // hardcoded example
   }, superSecret);
 
@@ -242,112 +208,3 @@ try {
   }
 
 
-
-  /// just for dev testing
-
-// app.post('/test/jwt' ,  signJwt , async (req , res , next) => {
-//    res.status(201).json({message : "good call" , success : "true"})
-// })
-
-
-
-
-
-
-//  //
-// const a = {
-//   "_id": "60b09ee2ab4af22fc0650332",
-//   "name": "First pos here , obout sql",
-//   "metadata": {
-//     "name": "First pos here , obout sql",
-//     "description": "this is first post here abot sql , bla bla and her ewe gona dot ha and we are gonn do that",
-//     "date": "28.05.2021",
-//     "author": "pera peric",
-//     "about_author": "",
-//     "picture": "./pictures/test-bl.png",
-//     "avatar": "./pictures/avatar.jpg",
-//     "links": [],
-//     "social_links": []
-//   },
-//   "content": [
-//     {
-//       "h1": "<script>console.log('123')<script>",
-//       "p": "nameeeee",
-//       "img_path": "./pictures/test-bl.png"
-//     },
-//     {
-//       "p": "2. p element dsadas ddddddd ddddddd ddddddd dddddd ddddddd ddddd ddddddd dddddddd dasdasd adasd asdas dasdadAa ADdaDadAD adAadADaAD adadad",
-//       "h1": "asdasdee`11111"
-//     },
-//     {
-//       "img_path": "./pictures/test.png",
-//       "p": "ja sam idiot , bla bla , ja mislim da ce ovaj arital da bud ecoll smrdis nagorana mnogo jebem ti se sam makom svuda i uvek smo na svemu",
-//       "h1": "end"
-//     }
-//   ]
-// }
-
-
-// const b = [
-//   {
-//     "_id": "60b09ee2ab4af22fc0650332",
-//     "name": "First pos here , obout sql",
-//     "metadata": {
-//       "name": "First pos here , obout sql",
-//       "description": "this is first post here abot sql , bla bla and her ewe gona dot ha and we are gonn do that",
-//       "date": "28.05.2021",
-//       "author": "pera peric",
-//       "about_author": "",
-//       "picture": "./pictures/test-bl.png",
-//       "avatar": "./pictures/avatar.jpg",
-//       "links": [],
-//       "social_links": []
-//     },
-//     "content": [
-//       {
-//         "h1": "<script>console.log('123')<script>",
-//         "p": "nameeeee",
-//         "img_path": "./pictures/test-bl.png"
-//       },
-//       {
-//         "p": "2. p element dsadas ddddddd ddddddd ddddddd dddddd ddddddd ddddd ddddddd dddddddd dasdasd adasd asdas dasdadAa ADdaDadAD adAadADaAD adadad",
-//         "h1": "asdasdee`11111"
-//       },
-//       {
-//         "img_path": "./pictures/test.png",
-//         "p": "ja sam idiot , bla bla , ja mislim da ce ovaj arital da bud ecoll smrdis nagorana mnogo jebem ti se sam makom svuda i uvek smo na svemu",
-//         "h1": "end"
-//       }
-//     ]
-//   },
-//   {
-//     "_id": "60b09f69c0a4f246a8f9e26e",
-//     "name": "Firts post",
-//     "metadata": {
-//       "name": "Firts post",
-//       "description": "this is first post",
-//       "date": "",
-//       "author": "pera peric",
-//       "about_author": "",
-//       "picture": "",
-//       "links": [],
-//       "social_links": []
-//     },
-//     "content": [
-//       {
-//         "h1": "<script>console.log('123')<script>",
-//         "p": "start",
-//         "img_path": "./pictures/test-bl.png"
-//       },
-//       {
-//         "p": "2. p element dsadas ddddddd ddddddd ddddddd dddddd ddddddd ddddd ddddddd dddddddd dasdasd adasd asdas dasdadAa ADdaDadAD adAadADaAD adadad",
-//         "h1": "asdasdee`11111"
-//       },
-//       {
-//         "img_path": "./pictures/test.png",
-//         "p": "ja sam idiot , bla bla , ja mislim da ce ovaj arital da bud ecoll smrdis nagorana mnogo jebem ti se sam makom svuda i uvek smo na svemu",
-//         "h1": "end"
-//       }
-//     ]
-//   }
-// ]
