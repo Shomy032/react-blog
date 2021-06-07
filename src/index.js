@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './CSS/index.css';
 import Article from './Article';
 import Footer from "./Footer" ;
-import Main from './Main'
+import Main from './MainPosts'
 import { BrowserRouter as Router, Switch, Route, Link , useParams , useRouteMatch } from "react-router-dom";
 
 import Auth from "./Auth"

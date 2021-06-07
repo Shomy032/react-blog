@@ -1,28 +1,26 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route, Link , useParams , useRouteMatch } from "react-router-dom";
-
+import './CSS/Footer.css'
 
 function Footer() {
-  const [loger, setLoger] = useState(false);
+  const [loger, setLoger] = useState(false); // todo : make this use context
 
 
   return (
-    <div>
-      <div
-        className="footer"
-        style={{
-          display: "flex",
-          height: 40,
-          width: "100%",
-          backgroundColor: "red",
-          margin: '0 0 1rem 0'
-        }}
-      >
-        <img src="./favicon.ico" alt="logo" />
-        {!loger && <Link style={{margin : '0 1rem' , backgroundColor : 'blue'}} to="/login">Login</Link> }
-        {!loger && <Link style={{margin : '0 1rem' , backgroundColor : 'blue'}} to="/register">Register</Link>}
-        {loger && <Link style={{margin : '0 1rem' , backgroundColor : 'blue'}} to="/logout">Logout</Link>}
-      </div>
+    <div className='footer'>
+
+        <img src="./favicon.ico" alt="logo" />       {/* just testing logo */}    
+
+        <div className='contentLinks'>
+       {/* e.g   /blogs , /all , /query */}
+        </div>
+  
+        <div className='authLinks'>
+        {!loger && <Link className='link' to="/login">Login</Link> }
+        {!loger && <Link className='link' to="/register">Register</Link>}
+        {loger && <Link className='link' to="/logout">Logout</Link>}
+        </div>
+
     </div>
   );
 }
