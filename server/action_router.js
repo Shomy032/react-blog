@@ -69,5 +69,31 @@ async function validateJwt(req, res, next) {
   }
 }
 
+ basicSum = (x , y) =>{
+  return x + y
+}
+advancedSum = (x , y) =>{
+  return x + y
+}
 
-module.exports = router;
+module.exports = {
+router : router ,
+// basicSum : basicSum() ,
+// advancedSum : advancedSum()
+}
+
+// module.exports = router  , {basicSum , advancedSum} ;
+
+// export default {
+//   validateJwt  , 
+//    router ,
+//    basicSum ,
+//    advancedSum
+// } 
+
+
+// module.exports = {
+//   validateJwt  , 
+//    router ,
+//    basicSum
+// } 

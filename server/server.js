@@ -56,20 +56,19 @@ app.get('/blogs' , cors({origin : "http://localhost:3000"}) /*for now*/,  async 
   
 
 //ALL ROUTES THAT NEED VALIDATION E.G. COMMENT , REPLY , EDIT ...
-const actionRoutes = require('./action_router')
-  app.use('/action', actionRoutes)
+const actionRoutes = require('./action_router'); // actionRoutes = {router , method1 , method2}
+app.use('/action', actionRoutes.router) // fix it
 
 
-
+// todo mome this to module
   const posts = db.get('posts')
-  app.get('/posts/all', async (req , res , next) =>{
+  app.get('/posts/all', cors({origin : "http://localhost:3000"}) , async (req , res , next) =>{
     const all = await posts.find({}) // this should return all
-    
      res.status(200).json(all) 
   })
  
   // todo : enable searching by partial , now you need full name
-  app.get('/posts/search/:query', async (req , res , next) =>{ // search and return one or more or null
+  app.get('/posts/search/:query', cors({origin : "http://localhost:3000"}) , async (req , res , next) =>{ // search and return one or more or null
        let search = req.params.query.split('_').join(' ') // parse string
       const one = await posts.find({ name : search })
       console.log(one.length)

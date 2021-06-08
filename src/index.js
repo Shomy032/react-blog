@@ -15,8 +15,8 @@ ReactDOM.render(
     <Router> {/* router is here for now , bcs links are in Footer and routes in Main*/} 
 
     <Footer />
-    <Auth />
-    <h1>debug</h1>
+    {/* <Auth /> */}
+    {/* <h1>debug</h1> */}
     <Main />
 
     </Router>

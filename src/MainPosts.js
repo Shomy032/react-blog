@@ -1,21 +1,17 @@
-import React, { useState, useEffect  } from "react";
-import {
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Switch, Route, Redirect, Link } from "react-router-dom";
 import ArticleDescription from "./ArticleDescription";
 import "./CSS/ArticleDescription.css";
+import SinglePost from './SinglePost'
 
-import "./CSS/Main.css"
+import "./CSS/MainPosts.css";
+
 // import Article from './Article';
-
 
 // ??
 // const user = {
 //   korisnik : true
 // }
-
 
 function Main() {
   let [values, setValues] = useState();
@@ -24,25 +20,32 @@ function Main() {
   useEffect(() => {
     try {
       (async () => {
-        const req = await fetch(`http://localhost:8000/posts/all`);
+        const req = await fetch(`http://localhost:4002/posts/all`);
         const res = await req.json();
-       
+
         setValues(res);
-        console.log(res)
+        // console.log(res);
       })();
     } catch (err) {
       console.log(err);
     }
   }, []);
 
+   /// THIS CHANGE ALL HARTS ON PAGE ,NOW
+   const [like , setLike]  = useState(false)
+
+   const handleLike = () => {
+     setLike(!like)    
+   }
+
   return (
-      <div className='Main'>
-           {/*map response and display all posts (questions) here */}
-      </div>
+    <div className="MainPosts">
+      {values &&
+        values.map((e) => {
+         return <SinglePost key={Math.random() * 12312317824} data={e}/>
+        })}
+    </div>
   );
-
-
-
 }
 
 export default Main;
@@ -75,24 +78,19 @@ export default Main;
 //       }}
 //     >
 
-
-      
-//        {values && <div>{JSON.stringify(values)}</div> } 
+//        {values && <div>{JSON.stringify(values)}</div> }
 //     </div>
 //     </Route>
 
 //     </Switch>
 
-//     </div>  
-
-
-
+//     </div>
 
 // {values &&
 //   values.map((e) =>{
 //     return(
 //     <div key={e._id}>
-//       <ArticleDescription data={e.metadata}  hover={true} show={true} /> 
+//       <ArticleDescription data={e.metadata}  hover={true} show={true} />
 //    </div>
 //       )
 //   })}
@@ -102,12 +100,12 @@ export default Main;
 //     console.log(e.name)
 //     return(
 //     <div key={e._id}>
-     
+
 //    <Route exact path={`/${e.name}`}>
-//      <h1>{e.name}</h1>  
+//      <h1>{e.name}</h1>
 //    {/* <Article search={e.name}/> */}
-//    </Route>  
- 
+//    </Route>
+
 //    </div>
 //       )
 //   })}
