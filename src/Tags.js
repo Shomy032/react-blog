@@ -13,8 +13,8 @@ function Tags(props) {
           return (
               <div className='tagsWraper'>
               {props.all.map((e , i) => (
-       
-                <Link to={`/posts/filter/${e}`} // todo : make /filter endpoint  
+                                                            // TODO make this component hit route        
+                <Link to={`/posts/filter?tag=${e}`} //  this route is /posts/filter?tag={e.g html}
                 className="tag"
                   key={Math.random() * 1237561245673}
                   style={{

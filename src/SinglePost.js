@@ -34,10 +34,10 @@ function SinglePost(props) {
     
    }
 
-   let parsedName = props.data.name.split(" ").join("_").toLowerCase();
+  
           return (
            <div className='singlePost'>    {/*TODO :  make this search by _id bcs name is maybe not unique*/}
-              <Link className="link" to={`/posts/search/${parsedName}`}>  {/* this endpoint exist */}
+              <Link className="link" to={`/posts/${props.parsedName}`}>  {/* this endpoint exist */}
                 {props.data.name}
               </Link>
               <Tags colors={ref.current} all={props.data.tags} />
@@ -45,6 +45,11 @@ function SinglePost(props) {
                 <p>{likeCount}</p>
                 {like ?  <i className="fas fa-heart" style={{color : 'red'}}/> : <i className="far fa-heart" />}
                 </div>
+                 <div className='comment'>
+                    <span>{`${12} comments`}</span>
+                    <i className='fas fa-share'/>
+                    <span>{props.data.date}</span>
+                    </div> 
             </div>
          
           );

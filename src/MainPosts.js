@@ -3,6 +3,7 @@ import { Switch, Route, Redirect, Link } from "react-router-dom";
 import ArticleDescription from "./ArticleDescription";
 import "./CSS/ArticleDescription.css";
 import SinglePost from './SinglePost'
+import Footer from './Footer' ;
 
 import "./CSS/MainPosts.css";
 
@@ -13,7 +14,7 @@ import "./CSS/MainPosts.css";
 //   korisnik : true
 // }
 
-function Main() {
+function MainPosts() {
   let [values, setValues] = useState();
   // let [metadata, setMetadata] = useState({});
 
@@ -31,24 +32,24 @@ function Main() {
     }
   }, []);
 
-   /// THIS CHANGE ALL HARTS ON PAGE ,NOW
-   const [like , setLike]  = useState(false)
 
-   const handleLike = () => {
-     setLike(!like)    
-   }
 
+  
   return (
+    <>
     <div className="MainPosts">
       {values &&
         values.map((e) => {
-         return <SinglePost key={Math.random() * 12312317824} data={e}/>
+        let parsedName = 'id?' + e._id// making query string
+         return <SinglePost key={Math.random() * 12312317824} data={e} parsedName={parsedName}/>
         })}
     </div>
+    <Footer data={values}/>
+    </>
   );
 }
 
-export default Main;
+export default MainPosts;
 
 // <div>
 // <Switch>

@@ -12,7 +12,7 @@ margin: 0 auto;
 
 width: 90%;
 align-items: center;
-justify-content: space-around;
+justify-content: space-around; /* maybe start ,soo that last element is not centered if num % 3 != 0 , will see */  
 
 display: flex;
 flex-direction: row;
@@ -102,8 +102,8 @@ color: white;
     border-color: white;
 }
 
-.tagsWraper{
- 
+.MainPosts .tagsWraper{
+ margin-top: 0.5rem;
 
 height: 30px;
 
@@ -111,11 +111,23 @@ display: flex;
 align-items: center;
 justify-content: start;
 }
-.tagsWraper a{
+.MainPosts .tagsWraper a{
     text-decoration: none;
     color: rgb(58, 57, 57);
 }
 
-  
+.MainPosts .comment{
+    position: absolute;
+right: 0.3rem;
+bottom: 0.3rem;
 
+cursor: pointer;
+}
+.MainPosts .comment span , 
+.MainPosts .comment i {
+    color: white;
+    margin: 0.2rem;
+
+    pointer-events: none;
+}
  
