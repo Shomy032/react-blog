@@ -66,6 +66,7 @@ app.get(
   }
 );
 
+// maybe not
 // TODO MAKE ENDPONT SORT ALL BY MOST RECENT
 // app.get('/posts/all/recent', cors({origin : "http://localhost:3000"}) , async (req , res , next) =>{
 //   const all = await posts.find({})
@@ -88,15 +89,47 @@ app.get(
         } else {
           throw new Error("there is no user with that id"); // this should never happen , but just in case
         }
-      } else if (req.params.query == "search") { //TODO
-        // handle search //TODO handle if user want to search
+      } else if (req.params.query == "search") { // need to search for all words 1+2+3+...
+        let allNames = []  
+        let arr = req.query.name.split('+') // todo sanitaze input on client so it omit +
+           arr.forEach((e) =>{ allNames.push(e) }) // query input , and push all in arr allNames
+
+           let searchArr = []
+           if(allNames.length !== 0 ){ // then construct search query , if there are parametars
+            console.log(allNames)
+               allNames.forEach((e) => {
+                  searchArr.push({"name" : {$regex : `.*${e}.*`}}) 
+                }) 
+            } else{
+              throw new Error('no search parametars')
+            }
+
+              // this return all close matches
+         const all = await posts.aggregate([ {"$match": { $or: searchArr }}  ]); 
+        
+        // this 2 for loops are needed to determine wich search result is better , or closer
+         for(let i = 0 ; i < all.length ; i++) {            // this regex is not matching CASE //FIX later
+            let allRegex = allNames.map(e => new RegExp(`.*${e}.*`)) // allNames = variable form one closure up
+              let weight = 0 // this is parametar for later sorting
+    
+              for(let j = 0 ; j < allRegex.length ; j++){ 
+            //   console.log('testing' , allRegex[j] , 'vs' , all[i].name)
+                  if(allRegex[j].test(all[i].name)) {
+                //    console.log('test passed')
+                    weight++
+                  } else {console.log('test failed')}
+          
+               }
+               all[i].weight = weight // append result to obj
+        } 
+         all.sort((a,b) =>  b.weight - a.weight ) // sort by most relevant search result
+
+          res.status(200).json(all)  
       } else if (req.params.query == "filter") {
         // this is for filters
-        const all = await posts.find({}); // get all
+        const sorted = await posts.find({} , {fields : { tags : 1}} ); // get all
         // filter for all _id and tags , bcs i dont need other thinhs here
-        const sorted = all.map((e) => {
-          return { _id: e._id, tags: e.tags };
-        });
+       
         const allFilters = req.query.tag; // get all filters form query string
 
         let filtered = [];
@@ -119,7 +152,7 @@ app.get(
 
         const match = []; // now find all elements that passes test, and push them in match
         for (let i = 0; i < filtered.length; i++) {
-          const one = await posts.findOne({ _id: filtered[i]._id });
+          const one = await posts.findOne({ _id: filtered[i]._id }); // maybe remove foor loop if perofrmance is droping , and remove fields so there is no need for 2nd query
 
           if (Object.keys(one).length !== 0) {
             match.push(one);
@@ -145,11 +178,48 @@ app.get(
   }
 );
 
-// app.get('/posts/:queryString' ,async (req , res) =>{
-//   console.log(req.params , req.query)
-//   let search = req.params.query.split('=')[1]
-//   console.log(search)
-//   res.send(search)
-// })
-
 // obj[Object.keys(obj)[0]] // cool trick to get first thing in obj
+
+
+
+// "$add": { "$cond": {
+//   "if": { "$eq": [ "$name", "question about sql" ] }, // this work :) // bcs is full match
+//   "then": 1,
+//   "else": 0
+// }}
+
+
+
+
+  //  { "$cond": {
+        //   "if": { "$eq": [ "$name", "question about sql" ] }, // this work :) // bcs is full match
+        //   "then": 1,
+        //   "else": 0
+        // }}
+        // { "$project": {                 
+        //   "name": 1,                          
+        //   "author" : 1,  
+        //    "text" : 1 ,
+        //     "likes" : 1 ,
+        //     "date" : 1,
+        //     "tags" : 1 ,
+        //   "weight": {  // add wight ++1 for all matches we have so we can sort
+        //     "$add": [ 
+        //       { "$cond": {
+        //         "if": {  $regexMatch: { input : 'name' , regex: `.*${'recat'}.*`, options: 'i' } },
+        //         "then": 1,
+        //         "else": 0
+        //       }}
+        //     ] 
+        //   }
+        // }},
+
+
+                   
+
+          // const str = 'table football';
+
+          // const regex = new RegExp('foo*');
+          // const globalRegex = new RegExp('foo*', 'g');
+          
+          // console.log(regex.test(str));
