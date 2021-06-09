@@ -2,9 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 
-
-import "./CSS/MainPosts.css"; // all styles for this component are here
-
+import "./CSS/MainPosts.css"; // all styles for this component are here , for now
 
 
 function Tags(props) {

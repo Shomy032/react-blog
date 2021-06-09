@@ -34,7 +34,6 @@ function SinglePost(props) {
     
    }
 
-  
           return (
            <div className='singlePost'>    {/*TODO :  make this search by _id bcs name is maybe not unique*/}
               <Link className="link" to={`/posts/${props.parsedName}`}>  {/* this endpoint exist */}

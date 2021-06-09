@@ -40,7 +40,7 @@ function MainPosts() {
     <div className="MainPosts">
       {values &&
         values.map((e) => {
-        let parsedName = 'id?' + e._id// making query string
+        let parsedName = 'id?_id=' + e._id// making query string
          return <SinglePost key={Math.random() * 12312317824} data={e} parsedName={parsedName}/>
         })}
     </div>
