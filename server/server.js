@@ -1,29 +1,28 @@
 const express = require("express");
 const app = express();
-app.use(express.json());
-
-const db = require("monk")("localhost:27017/blog");
-const blogs = db.get("blog-posts");
+app.use(express.json()); // parse all data , and accept only application/json
 
 const morgan = require("morgan");
 app.use(morgan("tiny"));
 
-require("dotenv").config();
-const PORT = process.env.PORT || "4002"; // 4002 in dev
+require("dotenv").config(); 
+const { posts , blogs } = require('./config') // get db collections
 
 const cors = require("cors");
 
-app.listen(PORT, () => {
-  console.log(`i am listening on localhost:${PORT}`);
-});
+
+app.use(cors( { origin: "http://localhost:3000" } )) // use cors form ./config for all routes
+
+
+
+
 
 app.get(
   "/blogs/:id",
-  cors({ origin: "http://localhost:3000" }) /*for now*/,
-  async (req, res, next) => {
+  async (req, res) => {
     try {
-      const data = await blogs.findOne({ name: req.params.id });
-      // console.log(data)
+      const data = await blogs.findOne({ name: req.params.id }); // 2
+      
       if (!data) throw new Error("that post is not in database");
       res.json({ ...data });
     } catch (err) {
@@ -34,11 +33,11 @@ app.get(
 
 app.get(
   "/blogs",
-  cors({ origin: "http://localhost:3000" }) /*for now*/,
-  async (req, res, next) => {
+ 
+  async (req, res) => {
     try {
-      const data = await blogs.find({});
-      // console.log(data)
+      const data = await blogs.find({});  
+      
       if (!data) throw new Error("there is no posts in db");
       res.json(data);
     } catch (err) {
@@ -52,15 +51,14 @@ app.use("/auth", authRoutes);
 
 //ALL ROUTES THAT NEED VALIDATION E.G. COMMENT , REPLY , EDIT ...
 const actionRoutes = require("./action_router"); // actionRoutes = {router , method1 , method2}
-app.use("/action", actionRoutes.router); // fix it
+app.use("/action", actionRoutes); // fix it
 
-// todo mome this to module
-const posts = db.get("posts");
+
 app.get(
   "/posts/all",
-  cors({ origin: "http://localhost:3000" }),
+
   async (req, res, next) => {
-    const all = await posts.find({});
+    const all = await posts.find({});   // 2
     const sorted = all.sort((a, b) => b.likes - a.likes);
     res.status(200).json(sorted);
   }
@@ -77,13 +75,13 @@ app.get(
 // todo : enable searching by partial , now you need full name
 app.get(
   "/posts/:query",
-  cors({ origin: "http://localhost:3000" }),
+  
   async (req, res) => {
     // search and return one or more or throw Error
     try {
       if (req.params.query == "id") { // check if query is id , if it is just send the one
         console.log(req.query._id , 'req.queru :::')
-        const one = await posts.find({ _id: req.query._id });
+        const one = await posts.find({ _id: req.query._id });  // 2
         if (one.length !== 0) {
           res.status(200).json(one);
         } else {
@@ -98,18 +96,18 @@ app.get(
            if(allNames.length !== 0 ){ // then construct search query , if there are parametars
             console.log(allNames)
                allNames.forEach((e) => {
-                  searchArr.push({"name" : {$regex : `.*${e}.*`}}) 
+                  searchArr.push({"name" : {$regex : `.*${e}.*` , $options: 'i' }}) 
                 }) 
             } else{
               throw new Error('no search parametars')
             }
 
-              // this return all close matches
-         const all = await posts.aggregate([ {"$match": { $or: searchArr }}  ]); 
+              // this return all close matches 
+         const all = await posts.aggregate([ {"$match": { $or: searchArr }}  ]);   // 2
         
         // this 2 for loops are needed to determine wich search result is better , or closer
          for(let i = 0 ; i < all.length ; i++) {            // this regex is not matching CASE //FIX later
-            let allRegex = allNames.map(e => new RegExp(`.*${e}.*`)) // allNames = variable form one closure up
+            let allRegex = allNames.map(e => new RegExp(`.*${e}.*` , "i")) // allNames = variable form one closure up
               let weight = 0 // this is parametar for later sorting
     
               for(let j = 0 ; j < allRegex.length ; j++){ 
@@ -117,7 +115,7 @@ app.get(
                   if(allRegex[j].test(all[i].name)) {
                 //    console.log('test passed')
                     weight++
-                  } else {console.log('test failed')}
+                  }  else {} // this is for testing // remove
           
                }
                all[i].weight = weight // append result to obj
@@ -127,7 +125,7 @@ app.get(
           res.status(200).json(all)  
       } else if (req.params.query == "filter") {
         // this is for filters
-        const sorted = await posts.find({} , {fields : { tags : 1}} ); // get all
+        const sorted = await posts.find({} , {fields : { tags : 1}} ); // get all  /// 2
         // filter for all _id and tags , bcs i dont need other thinhs here
        
         const allFilters = req.query.tag; // get all filters form query string
@@ -153,7 +151,7 @@ app.get(
         const match = []; // now find all elements that passes test, and push them in match
         for (let i = 0; i < filtered.length; i++) {
           const one = await posts.findOne({ _id: filtered[i]._id }); // maybe remove foor loop if perofrmance is droping , and remove fields so there is no need for 2nd query
-
+                          // 2
           if (Object.keys(one).length !== 0) {
             match.push(one);
           }
@@ -174,9 +172,29 @@ app.get(
     }
 
     // if(one.length === 0){res.sendStatus(404)}
-    // else { res.status(200).json(one)}
+    // else { res.status(200).json(one) }
   }
 );
+
+
+
+
+const PORT = process.env.PORT || "4002"; 
+app.listen(PORT, () => { 
+  console.log(`i am listening on localhost:${PORT}`);
+});
+
+
+
+// const { calculate , validate } = require('./middleware')
+// const x = calculate(2 , 45)
+// console.log(x)
+// const c = [
+//   validate(1 , 2) , validate(2 , 2)
+// ]
+// console.log(c)
+
+
 
 // obj[Object.keys(obj)[0]] // cool trick to get first thing in obj
 

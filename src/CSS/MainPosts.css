@@ -37,7 +37,7 @@ background-color: blueviolet;
     align-items: center;
 
     height: 30px;
-    width: 100px;
+    width: auto;
 
 cursor: pointer; /* wherever user click like is added user click */  
 }
@@ -98,7 +98,6 @@ color: white;
 .MainPosts .tag:hover{
     opacity: 0.9;
     cursor: pointer;
-
     border-color: white;
 }
 

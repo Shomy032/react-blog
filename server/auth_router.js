@@ -2,8 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const cors = require("cors");
-const db = require("monk")("localhost:27017/blog");
-const Ajv = require("ajv");
+// const db = require("monk")("localhost:27017/blog");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -15,20 +14,9 @@ router.use(cors({ origin: "http://localhost:3000" }) , (req, res, next) => {
 });
 
 
-const ajv = new Ajv();
+const { posts , blogs , users } = require('./config') // get db collections
+const { schema } = require('./schemas')
 
-//schema for login for now , todo : remove username requirment , and hash password
-const schema = {
-  properties: {
-    username: { type: "string" }, //todo : remove it later , dont need name for login
-    email: { type: "string" },
-    password: { type: "string" },
-  },
-  required: ["username", "email", "password"],
-  additionalProperties: false,
-};
-
-const users = db.get("users");
 
 // this is needed bcs retarded browser is sending preflight on fucking POST request , for some reason????????
 router.options("/register", function (req, res) {
@@ -40,7 +28,7 @@ router.options("/register", function (req, res) {
 
 router.post(
   "/register",
-  cors({ origin: "http://localhost:3000" }),
+  
   async (req, res) => {
     console.log(req.headers, req.body, req.params, req.query);
     try {
@@ -93,6 +81,7 @@ router.post(
 
 router.post(
     "/login",
+
     async (req, res) => {
       // todo : remove validating jwt
       try {

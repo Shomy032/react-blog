@@ -9,12 +9,12 @@ const jwt = require("jsonwebtoken");
 
 // log time and where request is comeing from
 // this is not needed remove if you want
-router.use(cors({ origin: "http://localhost:3000" }) , (req, res, next) => {
+router.use( (req, res, next) => {
   console.log("Time: ", Date.now(), "from action router");
   next();
 });
 
-router.use(cors({ origin: "http://localhost:3000" }), // action is for all routes then need auth
+router.use(
  (req , res , next) =>{ console.log('...validating...') ; next() }, // remove
 validateJwt , // validate auth
 (req, res, next) => {
@@ -69,20 +69,9 @@ async function validateJwt(req, res, next) {
   }
 }
 
- basicSum = (x , y) =>{
-  return x + y
-}
-advancedSum = (x , y) =>{
-  return x + y
-}
+ 
 
-module.exports = {
-router : router ,
-// basicSum : basicSum() ,
-// advancedSum : advancedSum()
-}
-
-// module.exports = router  , {basicSum , advancedSum} ;
+ module.exports = router  ;
 
 // export default {
 //   validateJwt  , 
