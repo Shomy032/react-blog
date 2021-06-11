@@ -1,0 +1,55 @@
+.Filter{
+    position: relative;  
+
+    
+    margin: 0 3rem 0 3rem;
+}
+.Filter ul{
+    position: absolute;
+left: 0;
+padding: 0;
+z-index: 10;
+
+flex-direction: row;
+list-style-type: none;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    flex-wrap: wrap;
+
+    height: auto;
+    width: 230px;
+
+    background-color: #fff;
+}
+
+.Filter .singleFilter{
+    margin: 0.2rem;
+    padding: 0.2rem 0.7rem;
+
+   text-decoration: none;
+   background-color: lightcoral;
+    transition: all 300ms ease;
+   cursor: pointer;
+
+   border: none;
+outline: none;
+border-radius: 0.2rem; 
+}
+
+.Filter .btn{
+
+  padding: 0.6rem 1.2rem;
+ 
+}
+
+.Filter i{
+    margin-left: 4rem;
+    font-size: 1.5rem;
+
+    padding: 1rem;
+}
+.Filter .singleFilter:hover{
+    background-color: lightsalmon;
+}

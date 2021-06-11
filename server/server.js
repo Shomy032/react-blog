@@ -64,15 +64,7 @@ app.get(
   }
 );
 
-// maybe not
-// TODO MAKE ENDPONT SORT ALL BY MOST RECENT
-// app.get('/posts/all/recent', cors({origin : "http://localhost:3000"}) , async (req , res , next) =>{
-//   const all = await posts.find({})
-//   const  sorted = all.sort((a , b) =>  b.likes - a.likes )
-//   res.status(200).json(sorted)
-// })
 
-// todo : enable searching by partial , now you need full name
 app.get(
   "/posts/:query",
   
@@ -168,14 +160,11 @@ app.get(
       }
     } catch (err) {
       // this will catch errors for all 3 things
-      res.status(404).json({ massage: err.message });
+      res.status(404).json({ massage: err.message }); // dev
     }
 
-    // if(one.length === 0){res.sendStatus(404)}
-    // else { res.status(200).json(one) }
   }
 );
-
 
 
 

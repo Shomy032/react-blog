@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Switch, Route, Redirect, Link } from "react-router-dom";
-import ArticleDescription from "./ArticleDescription";
-import "./CSS/ArticleDescription.css";
 import SinglePost from './SinglePost'
 import Footer from './Footer' ;
 
@@ -14,9 +11,11 @@ import "./CSS/MainPosts.css";
 //   korisnik : true
 // }
 
-function MainPosts() {
+function MainPosts( { dataFromDashboard } ) {
+
+
   let [values, setValues] = useState();
-  // let [metadata, setMetadata] = useState({});
+  
 
   useEffect(() => {
     try {
@@ -38,11 +37,18 @@ function MainPosts() {
   return (
     <>
     <div className="MainPosts">
+
       {values &&
-        values.map((e) => {
-        let parsedName = 'id?_id=' + e._id// making query string
-         return <SinglePost key={Math.random() * 12312317824} data={e} parsedName={parsedName}/>
+        values.map((e , index) => {
+        let parsedName = 'id?_id=' + e._id // making query string
+         return <SinglePost key={index} data={e} parsedName={parsedName}/>
         })}
+           {dataFromDashboard.length !== 0 && 
+           dataFromDashboard.map((e , index) => {
+            let parsedNamee = 'id?_id=' + e._id // making query string
+             return <SinglePost key={index} data={e} parsedName={parsedNamee}/>
+            })}
+
     </div>
     <Footer data={values}/>
     </>

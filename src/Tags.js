@@ -14,7 +14,7 @@ function Tags(props) {
                                                             // TODO make this component hit route        
                 <Link to={`/posts/filter?tag=${e}`} //  this route is /posts/filter?tag={e.g html}
                 className="tag"
-                  key={Math.random() * 1237561245673}
+                  key={i}
                   style={{
                     backgroundColor: `hsl( ${props.colors[i]} , 100%, 50%)`,
                   }}
