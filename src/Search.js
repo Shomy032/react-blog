@@ -18,13 +18,16 @@ const handleSubmit = (e) => {
     })
         .then((res) => res.json())
             .then((data) => {setResData(data)})
-                .catch((err) => console.log(err))
+                .catch((err) => console.error(err))
         }
 
  return (     
 
   <form className='Search' onSubmit={handleSubmit}>
-  <input type='text' name='search' value={value} onChange={handleChange}/>
+  <input type='text' 
+  name='search' 
+  placeholder='search for question...'
+  value={value} onChange={handleChange}/>
   <button type='submit' onSubmit={handleSubmit}>
   <i className='fas fa-search'/>
   </button>
