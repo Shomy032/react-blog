@@ -1,0 +1,6 @@
+
+/* todo : add styles for login and register form , and make it not appearing at default */
+/* dispaly it only when user want to register or login */
+.Auth{
+  background-color:  transparent ;
+}

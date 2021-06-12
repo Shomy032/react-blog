@@ -1,0 +1,21 @@
+.Search{
+    width: 20rem;
+    height: 80%;
+}
+.Search input {
+ width: 80%;
+ height: 100%;
+
+ padding-left: 2rem;
+
+}  
+.Search form{
+    width: 100%;
+    height: 100%;
+}
+
+.Search button{
+    height: 100%;
+    width: 20%;
+
+}

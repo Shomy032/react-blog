@@ -1,0 +1,17 @@
+.Footer{
+width: 100%;
+background-color : royalblue;
+
+display: flex;
+flex-wrap: wrap;
+justify-content: start;
+align-items: center;
+
+position: absolute;
+bottom: 0;
+}
+
+.Footer .link{
+    margin: 0.8rem;
+    
+}
