@@ -12,7 +12,7 @@ const handleChange = (e) => {
 const handleSubmit = (e) => {
    e.preventDefault()
    if(!value){ return } // if there is no input dont call API
-    let send = value.trim().split(' ').join('+')
+    let send = value.replace( /[^A-Za-z0-9]/g , ' ' ).trim().split(' ').join('+')
     fetch(`http://localhost:4002/posts/search?name=${send}` , {
      method : 'GET',
     })
