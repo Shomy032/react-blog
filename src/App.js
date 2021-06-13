@@ -15,7 +15,7 @@ function App() {
 
           return (
               <div className='App'>
-                   <Header />
+                   <Header sendDataToIndexThenToMain={sendDataToIndexThenToMain} />
              {/* <Auth /> */}
                
             <Dashboard sendDataToIndexThenToMain={sendDataToIndexThenToMain}/>

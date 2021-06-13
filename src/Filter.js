@@ -28,7 +28,7 @@ const handleChange = (eve) => {
 
 const [currentAdded , setCurrentAdded]  =  useState([])
 
-  const handleAddFilter = (filter , event) =>{ // filter is content from <li>
+  const handleAddFilter = (filter , event) => { // filter is content from <li>
     
   //  console.log('starting re render') // not sure , maybe not
     startReRender(Math.random()) // this is needed , bcs without it component wont rerender enough times
@@ -43,8 +43,11 @@ const [currentAdded , setCurrentAdded]  =  useState([])
      setCurrentAdded([...currentAdded , event.target.className.split(' ')[1]])
     } else {
         //  console.log('same filter again')
+        console.log('starting removing filters' , filters.current)
           let indexToRemove = filters.current.indexOf(filter)
+          
           filters.current.splice(indexToRemove , 1)
+          console.log('removing removed', filters.current)
         //  event.target.style.backgroundColor = 'lightcoral'
  
           let index = currentAdded.indexOf(event.target.className.split(' ')[1])
@@ -77,6 +80,11 @@ const removeTag = (event) => {
   let index = currentAdded.indexOf(event.target.className.split(' ')[1])
   if(index !== -1){
       currentAdded.splice(index , 1)
+   
+      console.log('in removeTag ::', 'starting removing filters' , filters.current)
+      filters.current.splice(index , 1)
+      console.log('removing removed', filters.current)
+
      } // else { console.error('index is -1 ') }
   
     // let colors = document.querySelectorAll(`.${event.target.className.split(' ')[1]}`)
@@ -100,7 +108,7 @@ const removeTag = (event) => {
 <> 
 {show ?  <div className='sideBarOpen'> <button className='btn' onClick={() => {
     addFilters(filters.current) // or filtersState , will see
-    // console.log('click')
+     console.log('click' , filters.current , "current filters")
     }}>applay filters</button>
     <i className='fas fa-times' onClick={setShowFalse}/>
   </div>
