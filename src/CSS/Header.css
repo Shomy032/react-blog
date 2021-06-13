@@ -1,0 +1,45 @@
+.Header {
+  display: flex;
+justify-content: space-between;
+  align-items: center;
+
+  padding: 0 6rem;
+  margin: 0 0 1rem 0;
+
+  height: 50px;
+  /* padding: 10px 6rem; */
+  width: 100%;
+
+  background-color: royalblue; /* for now just soo we can see*/   
+}
+.Header .authLinks{
+  display: flex;
+  height: 40px;
+}
+
+.Header .authLinks .link{
+  margin: 0 0.2rem;
+padding: 0.5rem 1rem;
+
+
+
+text-decoration: none;
+border-radius: 0.3rem;
+  background-color: blue ;  /* for now just soo we can see*/ 
+
+}
+
+  .Header .btn , .Header img{
+   /* width: 5rem; */
+   /* height: 30px ;  */
+   margin: auto;
+  /* height: 80%; */
+   /* height: 40px; */
+  }
+  .Header img{
+    max-width: 100px;
+    margin: 0;
+   
+    
+    height: 80%;
+  }

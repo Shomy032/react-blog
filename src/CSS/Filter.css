@@ -1,0 +1,112 @@
+
+
+.Filter{
+    position: relative;  
+    margin: 0 3rem 0 3rem;
+
+    z-index: 11;
+
+    /* background-color: white; */
+
+    max-height: 100%;
+    height: 39px;
+}
+.Filter ul{
+    /* position: absolute;
+left: 0;
+top: 5rem; */
+padding: 0;
+z-index: 10;
+
+flex-direction: row;
+list-style-type: none;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    flex-wrap: wrap;
+
+    height: auto;
+    width: 230px;
+
+    background-color: #fff;
+}
+
+.Filter .singleFilter{
+    margin: 0.2rem;
+    padding: 0.2rem 0.7rem;
+
+   text-decoration: none;
+   background-color: lightcoral;
+    transition: all 300ms ease;
+   cursor: pointer;
+
+   border: none;
+outline: none;
+border-radius: 0.2rem; 
+}
+
+.Filter .btn{
+
+    
+  padding: 0.6rem 1.2rem;
+ 
+}
+
+.Filter i{
+    margin-left: 4rem;
+    font-size: 1.5rem;
+
+    padding: 1rem;
+}
+.Filter .singleFilter:hover{
+    background-color: lightsalmon;
+}
+
+
+.Filter .searchForFilters{
+    width: 100%;
+   height: 1.5rem;
+   margin: 1rem 0;
+
+    /* position: absolute;
+    left: 0;
+    top: 6rem;
+     */
+   padding-left: 1rem;
+    
+}
+
+.Filter .currentFilters{
+     
+    width: 100%;
+} 
+
+.wraper{
+    position: absolute;
+    left: 0;
+    top: 4rem;
+
+    height: auto;
+    width: 100%;
+
+    background-color: white;
+
+    padding-left: 0.5rem;
+}
+
+.currentFilters p ,
+.allFiltersTags p{
+    margin: 0;
+    padding: 0 ;
+
+    font-size: 1rem;
+}
+
+.sideBarOpen{
+height: 40px;
+
+display: flex;
+justify-content: space-between;
+align-items: center;
+}

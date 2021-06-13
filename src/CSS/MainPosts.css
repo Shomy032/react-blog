@@ -1,0 +1,132 @@
+.MainPosts > * {
+  padding: 0 ;
+  margin: 0 ;
+}
+.MainPosts p{
+    padding: 0 ;
+    margin: 0 ; 
+}
+
+.MainPosts{
+margin: 0 auto;
+
+width: 90%;
+align-items: center;
+justify-content: space-around; /* maybe start ,soo that last element is not centered if num % 3 != 0 , will see */  
+
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+
+}
+.MainPosts .singlePost{
+    padding-left: 1rem;  
+    margin: 0.2rem 0;
+    position: relative;
+
+width: 33%;
+background-color: blueviolet; 
+}
+.MainPosts .likes{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+
+    display: flex;
+    justify-content: end;
+    align-items: center;
+
+    height: 30px;
+    width: auto;
+
+cursor: pointer; /* wherever user click like is added user click */  
+}
+.MainPosts .likes p , 
+.MainPosts .likes i{
+color: white;
+font-size: 1.3rem;
+
+margin: 0 0.2rem;
+
+pointer-events: none;
+}
+
+
+.MainPosts .link{ 
+color: white;
+
+
+    font-size: 2rem;
+    text-decoration: none;
+    position: relative; 
+}
+.MainPosts .link::after {
+    position: absolute;
+    content: '';
+    height: 2px;
+    bottom: 5px; 
+
+    margin: 0 auto;
+      left: 0;
+    right: 0;
+      width: 100%;
+      background: white; 
+      
+      -o-transition:.5s;
+        -ms-transition:.5s;
+    -moz-transition:.5s;
+    -webkit-transition:.5s;
+    transition:.5s;
+}
+
+ .MainPosts .link:hover::after {
+    width: 50%;
+    background: white;    
+}
+
+
+.MainPosts .tag {
+    font-size: 1.2rem;
+
+  text-align: center;
+  width: 80px;
+  height: auto;
+
+  transition: all 500ms ease;
+  border: 2px solid transparent;
+}
+.MainPosts .tag:hover{
+    opacity: 0.9;
+    cursor: pointer;
+    border-color: white;
+}
+
+.MainPosts .tagsWraper{
+ margin-top: 0.5rem;
+
+height: 30px;
+
+display: flex;
+align-items: center;
+justify-content: start;
+}
+.MainPosts .tagsWraper a{
+    text-decoration: none;
+    color: rgb(58, 57, 57);
+}
+
+.MainPosts .comment{
+    position: absolute;
+right: 0.3rem;
+bottom: 0.3rem;
+
+cursor: pointer;
+}
+.MainPosts .comment span , 
+.MainPosts .comment i {
+    color: white;
+    margin: 0.2rem;
+
+    pointer-events: none;
+}
+ 
