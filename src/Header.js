@@ -1,5 +1,5 @@
 import React, { useState , useRef , useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route, Link , useParams , useRouteMatch } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link , useParams , useRouteMatch, Redirect } from "react-router-dom";
 import './CSS/Header.css'
 import Search from './Search'
 import Filter from './Filter'
@@ -10,7 +10,9 @@ function Header( { sendDataToIndexThenToMain } ) {
 
 
   const [filters , addFilters ] = useState([]) // his is for child component // Filter
-    
+  const [resData , setResData ] = useState([])  // his is for child component // Search  
+  const [red , setRed] = useState( null )
+
   // console.log('current filters , rerendering' , filters , JSON.stringify(filters))
   
   let filterString = useRef('')
@@ -36,7 +38,7 @@ function Header( { sendDataToIndexThenToMain } ) {
                    .catch((err) => console.error(err)) // if there is err throw it
       } else { 
          console.error('bad filters' , 'returning')    
-          return () => console.log('returning , last else')
+           return () => console.log('returning , last else')
       }
 
   } ,  [JSON.stringify(filters)] ) // for some reason , this isnt working, it call only once , or twice ???
@@ -44,6 +46,17 @@ function Header( { sendDataToIndexThenToMain } ) {
                                                    // with ... it throw error
 //[JSON.stringify(outcomes)]
 //[JSON.stringify(filters)]
+
+useEffect(() => {
+  if(resData instanceof Error){  // myError instanceof Error // true
+    console.log('err in use effect')
+    setRed( <Redirect to='/posts/404' />)
+  }
+ 
+//   console.log('resData is changing')
+// console.log(resData , 'resData is changing')
+} , [resData])
+
 
 
 
@@ -66,9 +79,10 @@ function Header( { sendDataToIndexThenToMain } ) {
   {/* // setResData in Dashboard todo :: */}
           <div className='wraperHeader' style={{ display : 'flex' , width : 'auto'  }}>
 
-         <Search /> 
-         <Filter addFilters={addFilters} />  
-
+         <Search setResData={ setResData }/> 
+         <Filter addFilters={ addFilters } />  
+       
+       { red }
         </div>
 {/* addFilters={addFilters} from dashboard */}
 

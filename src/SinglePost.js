@@ -40,12 +40,14 @@ function SinglePost(props) {
                 {props.data.name}
               </Link>
               <Tags colors={ref.current} all={props.data.tags} />
+
                   <div className='likes' onClick={handleLike}>
                 <p>{likeCount}</p>
                 {like ?  <i className="fas fa-heart" style={{color : 'red'}}/> : <i className="far fa-heart" />}
                 </div>
+
                  <div className='comment'>
-                    <span>{`${12} comments`}</span>
+                    <span>{`${12} comments`}</span> {/* hard coded */}
                     <i className='fas fa-share'/>
                     <span>{props.data.date}</span>
                     </div> 

@@ -12,7 +12,20 @@ const schema = {
     additionalProperties: false,
   };
 
+  const postSchema = {
+    properties: {
+      name : { type: "string" }, 
+      text : { type: "string" }
+    },
+    required: ["name", "text"],
+    additionalProperties: false,
+  };
+
+
+
 
 module.exports = {
     schema  : schema ,
+    postSchema : postSchema ,
+    ajv : ajv
 }

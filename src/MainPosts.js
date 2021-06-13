@@ -3,19 +3,16 @@ import SinglePost from './SinglePost'
 import Footer from './Footer' ;
 
 import "./CSS/MainPosts.css";
+import { Redirect } from "react-router-dom";
 
 // import Article from './Article';
 
-// ??
-// const user = {
-//   korisnik : true
-// }
 
 function MainPosts( { dataFromDashboard } ) {
 
 
   let [values, setValues] = useState();
-  
+  let [redirectState , setRedirectState ] = useState(false); 
 
   useEffect(() => {
     try {
@@ -24,32 +21,39 @@ function MainPosts( { dataFromDashboard } ) {
         const res = await req.json();
 
         setValues(res);
+        setRedirectState(false)
         // console.log(res);
       })();
     } catch (err) {
       console.log(err);
+      setRedirectState(true)
     }
   }, []);
 
-
+// todo
 
   
   return (
     <>
-    <div className="MainPosts">
+    {/* to this conditionaly , posts or redirect */}
+{ redirectState ? <Redirect to='/posts/404'/>  : 
+<div className="MainPosts">
 
-      {values &&
-        values.map((e , index) => {
-        let parsedName = 'id?_id=' + e._id // making query string
-         return <SinglePost key={index} data={e} parsedName={parsedName}/>
-        })}
-           {dataFromDashboard.length !== 0 && 
-           dataFromDashboard.map((e , index) => {
-            let parsedNamee = 'id?_id=' + e._id // making query string
-             return <SinglePost key={index} data={e} parsedName={parsedNamee}/>
-            })}
+{values &&
+  values.map((e , index) => {
+  let parsedName = 'id?_id=' + e._id // making query string
+   return <SinglePost key={index} data={e} parsedName={parsedName}/>
+  })}
+     {dataFromDashboard.length !== 0 && 
+     dataFromDashboard.map((e , index) => {
+      let parsedNamee = 'id?_id=' + e._id // making query string
+       return <SinglePost key={index} data={e} parsedName={parsedNamee}/>
+      })}
 
-    </div>
+</div>
+}  
+     
+   
     <Footer data={values}/>
     </>
   );
