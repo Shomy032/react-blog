@@ -11,7 +11,7 @@ function Filter( { addFilters } ) {
     // then dasboard fetch wuth filters ,  and send to App and app pass to MainPosts
 
         // todo : make route for this , its fine to be hard coded bcs we know all our filters
-    const allFiltersYouHave = ['html' , 'css' , 'js', 'react' , 'go' , 'angular' , 'node' , 'go' , 'dom' , 'vue' , 'php' , 'pc' , 'nosql' , 'sql' , 'database' ,'c#', '.net' , 'express' , 'java' ,"oop"  ,"git" ,"other" , "docker", "graph", "http1.1" , 'http2.0' , 'quic', 'ip' , 'networking', 'algorithm', 'data', 'server', 'serverless', 'crypto', 'file', 'tls', 'tcp' , 'udp', 'bash', 'ssh' , 'telnet' , 'security' , 'password' , 'xss', 'cors','jwt', 'cookie' , 'md', 'scss','swift', 'ddos' , 'limiting' , 'status' ,'c#' ,'c++','linux','windows','mac','python']                  
+    const allFiltersYouHave = ['html' , 'css' , 'js', 'react' , 'redux' , 'angular' , 'node' , 'go' , 'dom' , 'vue' , 'php' , 'pc' , 'nosql' , 'sql' , 'database' ,'c#', '.net' , 'express' , 'java' ,"oop"  ,"git" ,"other" , "docker", "graph", "http1.1" , 'http2.0' , 'quic', 'ip' , 'networking', 'algorithm', 'data', 'server', 'serverless', 'crypto', 'file', 'tls', 'tcp' , 'udp', 'bash', 'ssh' , 'telnet' , 'security' , 'password' , 'xss', 'cors','jwt', 'cookie' , 'md', 'scss','swift', 'ddos' , 'limiting' , 'status' ,'c#' ,'c++','linux','windows','mac','python']                  
     const [filtersAll , setFiltersAll]  =  useState([...allFiltersYouHave])
 
   //  console.log('rendering again')

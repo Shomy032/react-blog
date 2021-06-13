@@ -1,6 +1,6 @@
 .Search{
     width: 20rem;
-    height: 80%;
+    /* height: 80%; */
 }
 .Search input {
  width: 80%;
@@ -12,6 +12,7 @@
 .Search form{
     width: 100%;
     height: 100%;
+/* height: auto; */
 }
 
 .Search button{

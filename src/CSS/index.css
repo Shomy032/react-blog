@@ -8,7 +8,7 @@ body {
   overflow: scroll;
 }
 #root{
-  min-height: 100vh;
+  min-height: 150vh;
 
   position: relative;
 }

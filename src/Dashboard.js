@@ -41,11 +41,13 @@ function Dashboard( { sendDataToIndexThenToMain } ) {
 //[JSON.stringify(outcomes)]
 //[JSON.stringify(filters)]
 
- return (     
-<div className='Dashboard'>
-    <Search setResData={setResData}/>
-     <Filter addFilters={addFilters}/>       
-     </div>
+ return (
+     <></>
+     
+// <div className='Dashboard'>
+//     <Search setResData={ setResData }/> 
+//      <Filter addFilters={addFilters}/>       
+//      </div>
     )
     
 }

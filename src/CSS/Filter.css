@@ -1,6 +1,15 @@
+
+
 .Filter{
     position: relative;  
     margin: 0 3rem 0 3rem;
+
+    z-index: 11;
+
+    /* background-color: white; */
+
+    max-height: 100%;
+    height: 39px;
 }
 .Filter ul{
     /* position: absolute;
@@ -39,6 +48,7 @@ border-radius: 0.2rem;
 
 .Filter .btn{
 
+    
   padding: 0.6rem 1.2rem;
  
 }
@@ -77,7 +87,12 @@ border-radius: 0.2rem;
     left: 0;
     top: 4rem;
 
+    height: auto;
     width: 100%;
+
+    background-color: white;
+
+    padding-left: 0.5rem;
 }
 
 .currentFilters p ,
@@ -86,4 +101,12 @@ border-radius: 0.2rem;
     padding: 0 ;
 
     font-size: 1rem;
+}
+
+.sideBarOpen{
+height: 40px;
+
+display: flex;
+justify-content: space-between;
+align-items: center;
 }
