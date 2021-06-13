@@ -1,0 +1,19 @@
+{
+    "_id": {
+      "$oid": "60be99efbcb614012c9910cc"
+    },
+    "author": "pera",
+    "text": "This is my question for testing on this website , it should have some text parser or something like that",
+    "likes": 32,
+    "peopleLiked" : [] ,
+    "date": "12.03.2021",
+    "tags": [
+      "react",
+      "redux",
+      "js"
+    ],
+    "name": "mock question just for testing? " ,
+    "comments" : []
+  }
+
+

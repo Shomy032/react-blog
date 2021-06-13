@@ -15,7 +15,7 @@ router.use(cors({ origin: "http://localhost:3000" }) , (req, res, next) => {
 
 
 const { posts , blogs , users } = require('./config') // get db collections
-const { schema } = require('./schemas')
+const { schema , ajv} = require('./schemas')
 
 
 // this is needed bcs retarded browser is sending preflight on fucking POST request , for some reason????????
@@ -28,7 +28,6 @@ router.options("/register", function (req, res) {
 
 router.post(
   "/register",
-  
   async (req, res) => {
     console.log(req.headers, req.body, req.params, req.query);
     try {
@@ -40,7 +39,12 @@ router.post(
           username: req.body.username,
         });
 
+
+
         if (!checkEmail && !checkUsername) {
+
+          // todo : add here check for email verification
+
           bcrypt.hash(req.body.password, 10, async function (err, hash) {
             if (err) {
               throw new Error("problem with hash");
@@ -139,7 +143,7 @@ const sighJWT = function signJwt(data) {
 
     const token = jwt.sign(
       {
-        exp: Math.floor(Date.now() / 1000) + 60 * 60, // expire time in seconds (60 * 60) = 1h
+        exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7, // expire time in seconds (60 * 60) = 1h
         data: [data.username, data.email, data._id], // hardcoded example
       },
       superSecret
