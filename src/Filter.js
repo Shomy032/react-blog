@@ -1,5 +1,5 @@
 import React , { useState , useRef } from "react";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import './CSS/Filter.css'
 
 function Filter( { addFilters } ) {
@@ -109,9 +109,10 @@ const removeTag = (event) => {
 {show ?  <div className='sideBarOpen'> <button className='btn' onClick={() => {
     addFilters(filters.current) // or filtersState , will see
      console.log('click' , filters.current , "current filters")
-    }}>applay filters</button>
+    }}><Link to='filters'>applay filters</Link></button>  {/* todo add real link path */}
     <i className='fas fa-times' onClick={setShowFalse}/>
   </div>
+  
 : <button className='btn' onClick={setShowTrue}>show filters</button> }
     </>
     <div className='wraper'>

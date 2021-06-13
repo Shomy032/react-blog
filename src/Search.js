@@ -17,7 +17,16 @@ const handleSubmit = (e) => {
      method : 'GET',
     })
         .then((res) => res.json())
-            .then((data) => {setResData(data)})
+            .then((data) => {
+                if(data.massage && data.success == false){
+                   console.error('no resulst for that search', 'passing err') 
+                   let error = new Error('no resulst for that search')
+                   setResData(error)   
+                } else{
+                    setResData(data)   
+                }
+                  
+                })
                 .catch((err) => console.error(err))
         }
 
