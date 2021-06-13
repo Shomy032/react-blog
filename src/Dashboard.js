@@ -8,7 +8,7 @@ function Dashboard( { sendDataToIndexThenToMain } ) {
     const [resData , setResData ] = useState([])  // his is for child component // Search
     const [filters , addFilters ] = useState([]) // his is for child component // Filter
     
-    console.log('current filters , rerendering' , filters , JSON.stringify(filters))
+    // console.log('current filters , rerendering' , filters , JSON.stringify(filters))
     
     let filterString = useRef('')
           
