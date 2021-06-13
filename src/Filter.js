@@ -109,7 +109,7 @@ const removeTag = (event) => {
 {show ?  <div className='sideBarOpen'> <button className='btn' onClick={() => {
     addFilters(filters.current) // or filtersState , will see
      console.log('click' , filters.current , "current filters")
-    }}><Link to='filters'>applay filters</Link></button>  {/* todo add real link path */}
+    }}>applay filters</button>  {/* todo add real link path */}
     <i className='fas fa-times' onClick={setShowFalse}/>
   </div>
   

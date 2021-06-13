@@ -71,7 +71,7 @@ app.get(
     // search and return one or more or throw Error
     try {
       if (req.params.query == "id") { // check if query is id , if it is just send the one
-        // console.log(req.query._id , 'req.queru :::')
+        //  console.log(req.query._id , 'req.queru :::')
         const one = await posts.find({ _id: req.query._id });  // 2
         if (one.length !== 0) {
           res.status(200).json(one);

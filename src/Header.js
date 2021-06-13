@@ -1,5 +1,5 @@
 import React, { useState , useRef , useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route, Link , useParams , useRouteMatch } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link , useParams , useRouteMatch, Redirect } from "react-router-dom";
 import './CSS/Header.css'
 import Search from './Search'
 import Filter from './Filter'
@@ -11,6 +11,7 @@ function Header( { sendDataToIndexThenToMain } ) {
 
   const [filters , addFilters ] = useState([]) // his is for child component // Filter
   const [resData , setResData ] = useState([])  // his is for child component // Search  
+  const [red , setRed] = useState( null )
 
   // console.log('current filters , rerendering' , filters , JSON.stringify(filters))
   
@@ -49,10 +50,8 @@ function Header( { sendDataToIndexThenToMain } ) {
 useEffect(() => {
   if(resData instanceof Error){  // myError instanceof Error // true
     console.log('err in use effect')
-        // redirect here
+    setRed( <Redirect to='/posts/404' />)
   }
-
-// do search and diaplay here
  
 //   console.log('resData is changing')
 // console.log(resData , 'resData is changing')
@@ -82,7 +81,8 @@ useEffect(() => {
 
          <Search setResData={ setResData }/> 
          <Filter addFilters={ addFilters } />  
-
+       
+       { red }
         </div>
 {/* addFilters={addFilters} from dashboard */}
 
