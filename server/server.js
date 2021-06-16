@@ -17,16 +17,17 @@ app.use(cors( { origin: "http://localhost:3000" } )) // use cors form ./config f
 
 
 
+
 app.get(
   "/blogs/:id",
   async (req, res) => {
     try {
       const data = await blogs.findOne({ name: req.params.id }); // 2
       
-      if (!data) throw new Error("that post is not in database");
+      if (!data) { throw new Error("that post is not in database"); }
       res.json({ ...data });
     } catch (err) {
-      res.json({ message: err.message, success: false });
+      res.json({ message: err , success: false });
     }
   }
 );
@@ -175,18 +176,17 @@ app.get(
   }
 );
 
+// FOR TROUBLESHOOTING  JEST
+// app.get('/testing' , async (req , res , next) =>{
+  
+//   res.status(200).json({
+//     message : 'its working'
+//   })
+  
+//   })
 
 
-
-
-
-//
-const PORT = process.env.PORT || "4002"; 
-app.listen(PORT, () => { 
-  console.log(`i am listening on localhost:${PORT}`);
-});
-
-
+module.exports = app ; // exported to use in __test__
 
 
 

@@ -12,12 +12,19 @@ const schema = {
     additionalProperties: false,
   };
 
+
+
+// const innerArraySchema = {
+//   "type": "array",
+//   "items" : "string"
+//   }
   const postSchema = {
     properties: {
       name : { type: "string" }, 
-      text : { type: "string" }
+      text : { type: "string" },
+      tags : { type : "array" }
     },
-    required: ["name", "text"],
+    required: ["name", "text" ],
     additionalProperties: false,
   };
 

@@ -14,6 +14,7 @@ module.exports = {
     posts : posts ,
     blogs : blogs ,
     users : users ,
-    schemas : schemas
+    schemas : schemas ,
+    db : db // need this to close connection in tests
 }
 

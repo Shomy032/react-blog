@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const cors = require("cors");
-const db = require("monk")("localhost:27017/blog");
+// const db = require("monk")("localhost:27017/blog");
 const Ajv = require("ajv");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -16,10 +16,13 @@ router.use( (req, res, next) => {
 });
 
 router.use(
- (req , res , next) =>{ console.log('...validating...') ; next() }, // remove
+ (req , res , next) =>{
+   // console.log('...validating...') ; 
+    next() // remove
+  }, 
  validateJwt , // validate auth
 (req, res, next) => {
-  console.log('token validation is passed') // remove
+//  console.log('token validation is passed') // remove
   next();
 });
 
@@ -28,45 +31,52 @@ router.use(
 // TODO : comment , like/upvote , replay , edit , edit profile 
 const { posts , users } = require('./config')
 const { postSchema , ajv } = require('./schemas') // ajv is validator
-router.post('/post' , async (req , res , next) =>{
 
- 
+router.post('/post' , async (req , res , next) => {
 
 try{
   const valid = await ajv.validate(postSchema, req.body);  
-  if(!valid) { next('there is err with schema') } // todo add better validation schema , e.g. more restrictive
-  
-// here deconstructe jwt
+  if(!valid) {
+   //   console.log( valid )
+     throw new Error('there is err with schema') 
+    } 
+  else {
+  //  console.log( 'WE ARE IN ELSE BLOCK' )
+// dont need to parse jwt here , its parsed in middleware and passed here in "locals"
 
-  let post = {
-    name : req.body.name ,
-    text : req.body.text ,
-    author :  res.locals._id , // added from jwt
-    likes : 0 ,
-    peopleLiked : [] ,
-    date : new Date() , // add curent date
-    tags: [] ,
-    comments : []
-  }
-// console.log('post :::' , post)
+let addTags = req.body.tags || [] //todo : valdate tags , soo user cant add tag asjkdasbhd from cmd
 
- // console.log('post should be added')
-const added = await posts.insert(post)
-// console.log('post is added' , added)
+let post = {
+  name : req.body.name ,
+  text : req.body.text ,
+  author :  res.locals._id , // added from jwt
+  likes : 0 ,
+  peopleLiked : [] ,
+  date : new Date() , 
+  tags: addTags , // todo add more validation here
+  comments : []
+}
 
+const added = await posts.insert(post);
 
-res.status(204).json({
-  message : 'post is added' ,
-  success : true
+res.status(201).json({
+  id : added._id , 
+message : 'post is added' ,
+success : true
 })
 
+
+  }
+
 } catch(err){
+//  console.log('there is err in catch blok' , err)
   next(err)
 }
 
 } ,  (err , req , res , next) => {
+ // console.log('there is err in last middleware' , err)
   if(err){
-    res.status(400).json({message : err , success : false })
+    res.status(400).json({message : err.message , success : false })
   } else {
     res.sendStatus(500)
   }
@@ -103,7 +113,7 @@ async function validateJwt(req, res, next) {
     const ber = req.headers.cookie.split("=")[1]; // parse auth headers , to get token
     const decoded = jwt.verify(ber, superSecret);
 
-    console.log("decoded", decoded);
+  //  console.log("decoded", decoded);
 
     if (decoded) {
       res.locals.user = decoded.data[0]; // data = [username , email , id]
