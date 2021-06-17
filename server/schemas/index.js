@@ -29,10 +29,21 @@ const schema = {
   };
 
 
+  const commentSchema = {
+    properties: {
+      text : { type: "string" } ,
+      postedOnId : { type : "string" }
+    },
+    required: [ "text" , 'postedOnId' ],
+    additionalProperties: false,
+  };
+
+
 
 
 module.exports = {
     schema  : schema ,
     postSchema : postSchema ,
+    commentSchema : commentSchema ,
     ajv : ajv
 }

@@ -138,8 +138,7 @@ router.post(
 // pure function for singing jwt
 const sighJWT = function signJwt(data) {
   try {
-    const superSecret =
-      "sahbdvadj17et6732787gyf87oh9viuycUIBY37O7F8WyubfIEB7BbdahusnuuguduidsahbgsbahnsdbsanajdbguyiA3rq8";
+    const superSecret = process.env.SECRET ;
 
     const token = jwt.sign(
       {
