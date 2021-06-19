@@ -4,9 +4,7 @@ const router = express.Router();
 
 const { posts  } = require('./config') // get db collections
 
-router.get("/sambaramba", () => {
-  console.log("samba", Date(), "from posts");
-});
+
 
 router.get(
   "/all",

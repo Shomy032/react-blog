@@ -1,3 +1,4 @@
+const { response } = require("express");
 const express = require("express");
 const router = express.Router();
 
@@ -17,7 +18,7 @@ router.use(
   },
   validateJwt, // validate auth , function at end of this file
   (req, res, next) => {
-    console.log("token validation is passed"); // remove
+  //  console.log("token validation is passed"); // remove
     next();
   }
 );
@@ -37,67 +38,8 @@ router.post(
       } else {
         //  console.log( 'WE ARE IN ELSE BLOCK' )
         // dont need to parse jwt here , its parsed in middleware and passed here in "locals"
-        const allFiltersYouHave = [
-          "html",
-          "css",
-          "js",
-          "react",
-          "redux",
-          "angular",
-          "node",
-          "go",
-          "dom",
-          "vue",
-          "php",
-          "pc",
-          "nosql",
-          "sql",
-          "database",
-          "c#",
-          ".net",
-          "express",
-          "java",
-          "oop",
-          "git",
-          "other",
-          "docker",
-          "graph",
-          "http1.1",
-          "http2.0",
-          "quic",
-          "ip",
-          "networking",
-          "algorithm",
-          "data",
-          "server",
-          "serverless",
-          "crypto",
-          "file",
-          "tls",
-          "tcp",
-          "udp",
-          "bash",
-          "ssh",
-          "telnet",
-          "security",
-          "password",
-          "xss",
-          "cors",
-          "jwt",
-          "cookie",
-          "md",
-          "scss",
-          "swift",
-          "ddos",
-          "limiting",
-          "status",
-          "c#",
-          "c++",
-          "linux",
-          "windows",
-          "mac",
-          "python",
-        ]; // BIG TODO HERE
+        const { allFiltersYouHave } = require("./config")
+        // git list fo tags
         
         function filterValidator(arr, store = []) {
           result = [];
@@ -126,6 +68,7 @@ router.post(
           date: new Date(),
           tags: [], // todo add more validation here
           comments: [],
+          edited : false
         };
         post.tags = filterValidator(allFiltersYouHave, req.body.tags);
 
@@ -143,16 +86,7 @@ router.post(
       next(err);
     }
   },
-  (err, req, res, next) => {
-    // console.log('there is err in last middleware' , err)
-    if (err) {
-      res
-        .status(400)
-        .json({ message: err.message || "there is err", success: false });
-    } else {
-      res.sendStatus(500);
-    }
-  }
+  errorHandler
 );
 
 router.post(
@@ -182,7 +116,8 @@ router.post(
               authorId: userId,
               likes: 0,
               peopleLiked : [],
-              commentedOn : req.body.postedOnId
+              commentedOn : req.body.postedOnId,
+              edited : false
             });
 
             if (req.body.postedOnId) {
@@ -237,16 +172,7 @@ router.post(
       next(err);
     }
   },
-  (err, req, res, next) => {
-    // console.log('there is err in last middleware' , err)
-    if (err) {
-      res
-        .status(400)
-        .json({ message: err.message || "there is errEnd", success: false });
-    } else {
-      res.sendStatus(500);
-    }
-  }
+  errorHandler
 );
 
 // const { posts, users, comment } = require("./config");
@@ -261,7 +187,7 @@ router.post("/like", async (req, res, next) => {
     console.log(valid , ":::  valid")
     if(valid === true){
       const {postType , postId  , actionType } = req.body
-      const  { authenticated , user , email , _id }  = res.locals // data from jwt
+      const  { authenticated  , _id }  = res.locals // data from jwt
   //    console.log(valid , authenticated , req.body.postType , req.body.postId)
      
 
@@ -415,28 +341,87 @@ router.post("/like", async (req, res, next) => {
    // console.log(err , err.message)
     next(err);
   }  
-} ,  (err, req, res, next) => {
-  // console.log('there is err in last middleware' , err)
-  if (err) {
-    res
-      .status(400)
-      .json({ message: err.message || "there is err", success: false });
-  } else {
-    res.sendStatus(500);
+} ,  errorHandler  );
+
+const { schemaEdit } = require("./schemas")
+router.post("/edit", async (req, res, next) => {
+// check who is user
+// if is good 
+// find post 
+//or comment
+// and add edited flag
+// respond with new post
+try{
+  const valid = await ajv.validate( schemaEdit, req.body );
+  if(valid){
+    const {postId , postType , newText} = req.body ;
+    const { user , _id  } = res.locals; // todo add author name
+   // console.log(postType , 'postType'  , postType === "post")
+      if(postType === "post"){
+        const check = await posts.find({_id : postId , author : _id  })
+           if(check.length !== 0){
+             const update = await posts.update({_id : postId , author : _id} ,
+               { $set : { text : newText , edited : true} } , 
+              { upsert : false })
+              console.log(update , "update")
+             const {  n , nModified , ok } = update ;
+               if( n && nModified && ok){
+                check[0].edited = true ;
+                check[0].text = newText ;
+                res.status(201).json({success : true 
+                  , message : "editet successfully",
+                editedPost : check[0]
+                })
+               } else {
+                throw new Error("not modified")
+              }
+             
+           } else {
+             throw new Error("there is no post like that , or you are not author")
+           }
+      }else if(postType === "comment"){
+      //  console.log(postId , _id)
+        const check = await comment.find({ _id : postId , authorId : _id  })
+        console.log(check , "check")
+          
+           if(check.length !== 0){
+             const update = await comment.update({ _id : postId , authorId : _id } ,
+               { $set : { text : newText , edited : true} } , 
+              { upsert : false })
+            //  console.log(update , "update")
+             const {  n , nModified , ok } = update ;
+               if( n && nModified && ok){
+                check[0].edited = true ;
+                check[0].text = newText ;
+                res.status(201).json({success : true 
+                  , message : "editet successfully",
+                editedComment : check[0]
+                })
+               } else {
+                 throw new Error("not modified")
+               }
+             
+           } else {
+             throw new Error("there is no comment like that , or you are not author")
+           }
+      } else {
+        console.log("we have schema err")
+        throw new Error("postType must be \"post\" or \"comment\" ")
+      }
+
+      
+      
+
+
+  }else {
+    throw new Error("invalid schema")
   }
-});
+} catch(err){
+next(err);
+}
+} , errorHandler);
 
 
-router.post("/likecomment", (req, res, next) => {});
-
-
-
-router.post("/replay", (req, res, next) => {});
-
-router.put("/edit", (req, res, next) => {});
-router.put("/edit-profile", (req, res, next) => {
-  // probably its to much
-});
 
 // used at all routes in this file
 // middleware for validating jwt tokens
@@ -470,7 +455,16 @@ async function validateJwt(req, res, next) {
   }
 }
 
-function errorHandler(err, req, res, next) {} //todo add or remove
+function errorHandler(err, req, res, next) {
+console.log('there is err in last middleware' , err)
+  if (err) {
+    res
+      .status(400)
+      .json({ message: err.message || "there is err", success: false });
+  } else {
+    res.sendStatus(500);
+  }
+} //todo add or remove
 
 module.exports = router;
 
@@ -485,4 +479,16 @@ module.exports = router;
 //   validateJwt  ,
 //    router ,
 //    basicSum
+// }
+
+
+// (err, req, res, next) => {
+//   // console.log('there is err in last middleware' , err)
+//   if (err) {
+//     res
+//       .status(400)
+//       .json({ message: err.message || "there is err", success: false });
+//   } else {
+//     res.sendStatus(500);
+//   }
 // }

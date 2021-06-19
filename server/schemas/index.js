@@ -48,7 +48,15 @@ const schema = {
      additionalProperties: false
   }
 
-
+  const schemaEdit = {
+    properties: {
+     postId : { type : "string" },
+     postType : { type : "string"  },
+     newText : { type : "string" }
+    },
+     required: [  "postId" , "postType" , "newText"],
+     additionalProperties: false
+  }
 
 
 module.exports = {
@@ -56,5 +64,6 @@ module.exports = {
     postSchema : postSchema ,
     commentSchema : commentSchema ,
     schemaLike : schemaLike ,
+    schemaEdit : schemaEdit ,
     ajv : ajv
 }
