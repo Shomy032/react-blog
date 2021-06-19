@@ -38,6 +38,16 @@ const schema = {
     additionalProperties: false,
   };
 
+  const schemaLike = {
+    properties: {
+     postId : { type : "string" },
+     postType : { type : "string"  },
+     actionType : { type : "string"  }
+    },
+     required: [  "postId" , "postType" , "actionType" ],
+     additionalProperties: false
+  }
+
 
 
 
@@ -45,5 +55,6 @@ module.exports = {
     schema  : schema ,
     postSchema : postSchema ,
     commentSchema : commentSchema ,
+    schemaLike : schemaLike ,
     ajv : ajv
 }

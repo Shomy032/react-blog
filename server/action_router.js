@@ -15,7 +15,7 @@ router.use(
     // console.log('...validating...') ;
     next(); // remove
   },
-  validateJwt, // validate auth
+  validateJwt, // validate auth , function at end of this file
   (req, res, next) => {
     console.log("token validation is passed"); // remove
     next();
@@ -24,7 +24,7 @@ router.use(
 
 // TODO : comment , like/upvote , replay , edit , edit profile
 const { posts, users, comment } = require("./config");
-const { postSchema, commentSchema, ajv } = require("./schemas"); // ajv is validator
+const { postSchema, commentSchema, ajv , schemaLike } = require("./schemas"); // ajv is validator
 
 router.post(
   "/post",
@@ -181,6 +181,7 @@ router.post(
               author: user,
               authorId: userId,
               likes: 0,
+              peopleLiked : []
             });
 
             if (req.body.postedOnId) {
@@ -189,10 +190,10 @@ router.post(
               // console.log("req.body.postedOnId :::", req.body.postedOnId);
               const host = await posts.update(
                 { _id: req.body.postedOnId },
-                { $set: { comments: comm } },
-                { upsert: true }
+                { $set: { comments: comm } }
               );
               
+        // , { upsert: true }   // maybe   
               if (host.ok) {
                 // console.log('returning')
 
@@ -247,7 +248,188 @@ router.post(
   }
 );
 
-router.post("/like", (req, res, next) => {});
+// const { posts, users, comment } = require("./config");
+// schemaLike
+
+// todo make this check for dislike
+router.post("/like", async (req, res, next) => { 
+ // console.log("in like route" , schemaLike, req.body )
+  try{
+    const valid = await ajv.validate(schemaLike, req.body);
+    
+    console.log(valid , ":::  valid")
+    if(valid === true){
+      const {postType , postId  , actionType } = req.body
+      const  { authenticated , user , email , _id }  = res.locals // data from jwt
+  //    console.log(valid , authenticated , req.body.postType , req.body.postId)
+     
+
+        if(actionType === "like"){
+          if(authenticated && postType === "post"){
+            //  console.log('we are in posts')
+              const onepost = await posts.find( { _id : postId } )
+            //    console.log(onepost , 'onepost' , onepost.length)
+                if(onepost.length !== 0){
+              //    console.log('we have post')
+                     const  { peopleLiked , author , likes }  = onepost[0]
+                     
+                         if(author === _id){
+                           throw new Error("you cant like your own post")
+                         } else if(peopleLiked.includes(_id)){ // todo make this check for dislike
+                          throw new Error("you have alredy liked that post or comment")
+                         } else {
+                          //  const fi = await posts.find({ _id: postId} , {likes : 1 , peopleLiked : 1})
+                          //  console.log(fi , "fi")
+                            const host = await posts.update(
+                            { _id: postId },
+                            { $set: { likes: likes + 1 , peopleLiked : [...peopleLiked , _id ] } }
+                           );
+                           const {  n , nModified , ok } = host
+                                if( n && nModified && ok){
+                            //  console.log('all good') 
+                                    res.status(201).json({success : true , message : "you have successfully liked"})   
+                                }  //todo add dislike
+                              // console.log( host , 'res after updating' )   
+                         }
+                    
+                  //   console.log('log' , peopleLiked , peopleLiked.length , peopleLiked.includes(_id))
+                } else {
+              //    console.log('we dont have post')
+                  throw new Error('there is no post with that id')
+                }
+            } else if(authenticated && postType === "comment"){
+      //  console.log('we are in posts')
+      const oneComment = await comment.find( { _id : postId } )
+      //    console.log(onepost , 'onepost' , onepost.length)
+          if(oneComment.length !== 0){
+        //    console.log('we have post')
+               const  { peopleLiked , author , likes }  = oneComment[0]
+               
+                   if(author === _id){
+                     throw new Error("you cant like your own comment")
+                   } else if(peopleLiked.includes(_id)){ // todo make this check for dislike
+                    throw new Error("you have alredy liked that post or comment")
+                   } else {
+                    //  const fi = await posts.find({ _id: postId} , {likes : 1 , peopleLiked : 1})
+                    //  console.log(fi , "fi")
+                      const host = await comment.update(
+                      { _id: postId },
+                      { $set: { likes: likes + 1 , peopleLiked : [...peopleLiked , _id ] } }
+                     );
+                     const {  n , nModified , ok } = host
+                          if( n && nModified && ok){
+                      //  console.log('all good') 
+                              res.status(201).json({success : true , message : "you have successfully liked"})   
+                          }  //todo add dislike
+                        // console.log( host , 'res after updating' )   
+                   }
+              
+            //   console.log('log' , peopleLiked , peopleLiked.length , peopleLiked.includes(_id))
+          } else {
+        //    console.log('we dont have post')
+            throw new Error('there is no comment with that id')
+          }            
+            } else {
+              throw new Error("postType needs to be 'post' or 'comment' ")
+            }
+       } // todo make function
+        else if(actionType === "dislike"){
+          if(authenticated && postType === "post"){
+            //  console.log('we are in posts')
+              const onepost = await posts.find( { _id : postId } )
+            //    console.log(onepost , 'onepost' , onepost.length)
+                if(onepost.length !== 0){
+              //    console.log('we have post')
+                     const  { peopleLiked , author , likes }  = onepost[0]
+                     
+                         if(author === _id){
+                           throw new Error("you cant dislike your own post")
+                         } else if(!peopleLiked.includes(_id)){ // todo make this check for dislike
+                          throw new Error("err , you cant dislike what you are not liked first")
+                         } else {
+                          //  const fi = await posts.find({ _id: postId} , {likes : 1 , peopleLiked : 1})
+                          //  console.log(fi , "fi")
+                          const newPeopleLiked = peopleLiked.filter((e) => e !== _id)
+                            const host = await posts.update(
+                            { _id: postId },
+                            { $set: { likes: likes - 1 , peopleLiked : [...newPeopleLiked] } } // change peopleliked
+                           );
+                           const {  n , nModified , ok } = host
+                                if( n && nModified && ok){
+                            //  console.log('all good') 
+                                    res.status(201).json({success : true , message : "you have successfully disliked"})   
+                                }  //todo add dislike
+                              // console.log( host , 'res after updating' )   
+                         }
+                    
+                  //   console.log('log' , peopleLiked , peopleLiked.length , peopleLiked.includes(_id))
+                } else {
+              //    console.log('we dont have post')
+                  throw new Error('there is no post with that id')
+                }
+            } else if(authenticated && postType === "comment"){
+  //  console.log('we are in posts')
+  const onepost = await comment.find( { _id : postId } )
+  //    console.log(onepost , 'onepost' , onepost.length)
+      if(onepost.length !== 0){
+    //    console.log('we have post')
+           const  { peopleLiked , author , likes }  = onepost[0]
+           
+               if(author === _id){
+                 throw new Error("you cant dislike your own post")
+               } else if(!peopleLiked.includes(_id)){ // todo make this check for dislike
+                throw new Error("err , you cant dislike what you are not liked first")
+               } else {
+                //  const fi = await posts.find({ _id: postId} , {likes : 1 , peopleLiked : 1})
+                //  console.log(fi , "fi")
+                const newPeopleLiked = peopleLiked.filter((e) => e !== _id)
+                  const host = await comment.update(
+                  { _id: postId },
+                  { $set: { likes: likes - 1 , peopleLiked : [...newPeopleLiked] } } // change peopleliked
+                 );
+                 const {  n , nModified , ok } = host
+                      if( n && nModified && ok){
+                  //  console.log('all good') 
+                          res.status(201).json({success : true , message : "you have successfully disliked"})   
+                      }  //todo add dislike
+                    // console.log( host , 'res after updating' )   
+               }
+          
+        //   console.log('log' , peopleLiked , peopleLiked.length , peopleLiked.includes(_id))
+      } else {
+    //    console.log('we dont have post')
+        throw new Error('there is no comment with that id')
+      }
+            } else {
+              throw new Error("postType needs to be 'post' or 'comment' ")
+            }
+        }
+        else{ throw new Error("actionType must be like or dislike") }
+ 
+
+    } else {
+      throw new Error("invalid schema")
+    }
+  } catch(err){
+   // console.log(err , err.message)
+    next(err);
+  }  
+} ,  (err, req, res, next) => {
+  // console.log('there is err in last middleware' , err)
+  if (err) {
+    res
+      .status(400)
+      .json({ message: err.message || "there is err", success: false });
+  } else {
+    res.sendStatus(500);
+  }
+});
+
+
+router.post("/likecomment", (req, res, next) => {});
+
+
+
 router.post("/replay", (req, res, next) => {});
 
 router.put("/edit", (req, res, next) => {});
@@ -287,7 +469,7 @@ async function validateJwt(req, res, next) {
   }
 }
 
-function errorHandler(err, req, res, next) {}
+function errorHandler(err, req, res, next) {} //todo add or remove
 
 module.exports = router;
 
