@@ -181,7 +181,8 @@ router.post(
               author: user,
               authorId: userId,
               likes: 0,
-              peopleLiked : []
+              peopleLiked : [],
+              commentedOn : req.body.postedOnId
             });
 
             if (req.body.postedOnId) {
