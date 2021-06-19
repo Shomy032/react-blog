@@ -12,20 +12,58 @@ const schema = {
     additionalProperties: false,
   };
 
+
+
+// const innerArraySchema = {
+//   "type": "array",
+//   "items" : "string"
+//   }
   const postSchema = {
     properties: {
       name : { type: "string" }, 
-      text : { type: "string" }
+      text : { type: "string" },
+      tags : { type : "array" }
     },
-    required: ["name", "text"],
+    required: ["name", "text" ],
     additionalProperties: false,
   };
 
 
+  const commentSchema = {
+    properties: {
+      text : { type: "string" } ,
+      postedOnId : { type : "string" }
+    },
+    required: [ "text" , 'postedOnId' ],
+    additionalProperties: false,
+  };
+
+  const schemaLike = {
+    properties: {
+     postId : { type : "string" },
+     postType : { type : "string"  },
+     actionType : { type : "string"  }
+    },
+     required: [  "postId" , "postType" , "actionType" ],
+     additionalProperties: false
+  }
+
+  const schemaEdit = {
+    properties: {
+     postId : { type : "string" },
+     postType : { type : "string"  },
+     newText : { type : "string" }
+    },
+     required: [  "postId" , "postType" , "newText"],
+     additionalProperties: false
+  }
 
 
 module.exports = {
     schema  : schema ,
     postSchema : postSchema ,
+    commentSchema : commentSchema ,
+    schemaLike : schemaLike ,
+    schemaEdit : schemaEdit ,
     ajv : ajv
 }

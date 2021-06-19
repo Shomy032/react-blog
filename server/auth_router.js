@@ -90,7 +90,9 @@ router.post(
       // todo : remove validating jwt
       try {
         // console.log(req.body)
+        console.log(schema , req.body)
         const valid = await ajv.validate(schema, req.body);
+        console.log(valid , 'valid')
         // console.log('valid' ,  valid)
         if (valid) {
           // 1. lvl deep
@@ -107,6 +109,10 @@ router.post(
   
             // if we have match allow login if not throw err
             if (match) {
+
+              const token = sighJWT(check);
+              res.cookie("access_token", token, { httpOnly: true });
+
               res
                 .status(200)
                 .json({
@@ -123,10 +129,10 @@ router.post(
             }
           }
         } else if (!valid) {
-          res
-            .status(400)
-            .json({ message: "invalid login schema", success: false });
-        }
+           res
+             .status(400)
+             .json({ message: "invalid login schema", success: false });
+         }
       } catch (err) {
         // console.log(err)
         res.status(400).json({ message: err.message, success: false });
@@ -138,12 +144,11 @@ router.post(
 // pure function for singing jwt
 const sighJWT = function signJwt(data) {
   try {
-    const superSecret =
-      "sahbdvadj17et6732787gyf87oh9viuycUIBY37O7F8WyubfIEB7BbdahusnuuguduidsahbgsbahnsdbsanajdbguyiA3rq8";
+    const superSecret = process.env.SECRET ;
 
     const token = jwt.sign(
       {
-        exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7, // expire time in seconds (60 * 60) = 1h
+        exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 21, // expire time in seconds (60 * 60) = 1h
         data: [data.username, data.email, data._id], // hardcoded example
       },
       superSecret
