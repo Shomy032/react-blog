@@ -10,7 +10,7 @@
 
 
 
-## This is my blog , a im using create-react-app , express , and Mongo
+## This is my forum , a im using react , express , and Mongo
 
 
 
