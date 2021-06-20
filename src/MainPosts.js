@@ -4,13 +4,14 @@ import Footer from './Footer' ;
 
 import "./CSS/MainPosts.css";
 import { Redirect } from "react-router-dom";
+import Popup from "./Popup";
 
 // import Article from './Article';
 
 
-function MainPosts( { dataFromDashboard } ) {
+function MainPosts( { dataFromDashboard , setPopup , popup} ) {
 
-
+  
   let [values, setValues] = useState();
   let [redirectState , setRedirectState ] = useState(false); 
 
@@ -32,9 +33,10 @@ function MainPosts( { dataFromDashboard } ) {
 
 // todo
 
-  
+  // TODO : RENDER POPUP IN HEADER TOO
   return (
     <>
+{popup && <Popup setPopup={setPopup}/>}
     {/* to this conditionaly , posts or redirect */}
 { redirectState ? <Redirect to='/posts/404'/>  : 
 <div className="MainPosts">
@@ -42,12 +44,12 @@ function MainPosts( { dataFromDashboard } ) {
 {values &&
   values.map((e , index) => {
   let parsedName = 'id?_id=' + e._id // making query string
-   return <SinglePost key={index} data={e} parsedName={parsedName}/>
+   return <SinglePost key={index} data={e} parsedName={parsedName} setPopup={setPopup}/>
   })}
      {dataFromDashboard.length !== 0 && 
      dataFromDashboard.map((e , index) => {
       let parsedNamee = 'id?_id=' + e._id // making query string
-       return <SinglePost key={index} data={e} parsedName={parsedNamee}/>
+       return <SinglePost key={index} data={e} parsedName={parsedNamee} setPopup={setPopup}/>
       })}
 
 </div>

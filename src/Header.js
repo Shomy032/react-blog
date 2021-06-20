@@ -5,7 +5,7 @@ import Search from './Search'
 import Filter from './Filter'
 
 
-function Header( { sendDataToIndexThenToMain } ) {
+function Header( { sendDataToIndexThenToMain  , setPopup } ) {
   const [loger, setLoger] = useState(false); // todo : make this use context
 
 
@@ -71,9 +71,9 @@ useEffect(() => {
       
         <div className='authLinks'>
         <img src="./favicon.ico" alt="logo" />       {/* just testing logo */}  
-        {!loger && <Link className='link' to="/login">Login</Link> }
-        {!loger && <Link className='link' to="/register">Register</Link>}
-        {loger && <Link className='link' to="/logout">Logout</Link>}
+        {!loger && <div className='link' onClick={() => setPopup(true)} >Sing up</div> }
+        {/* {!loger && <div className='link' onClick={() => setPopup(true)} >Register</div>}
+        {loger && <div className='link' to="/logout">Logout</div>} */}
         </div>
 
   {/* // setResData in Dashboard todo :: */}

@@ -6,37 +6,17 @@ import Tags from './Tags'
 import "./CSS/MainPosts.css";
 
 
-const url = "http://localhost:4002/action/like"; // this wont change
-
-async function likeIt(url , actionType , postId , postType){
-   try{
-      const res = await fetch(url ,{
-         method : 'POST',
-         headers: new Headers({'Content-Type': 'application/json'}),
-         body : JSON.stringify({
-            postId : postId , // or comment id name dont change either way
-            postType : postType , // post or comment , post in this case
-            actionType : actionType // like or dislike
-         })
-      });
-      const data = await res.json();
-      console.log("data" , data);
-      return data ;
-   } catch(err) {
-   console.log("err" , err , "sended" , "failed to" , actionType)
-   return new Error("failed to" + actionType);
-   }
-
-}
 
 
 
 function SinglePost(props) {
+   
+// props.setPopup // this triger login popup , this is passed to SinglePost from MainPosts
 
    const [like , setLike]  = useState(false)
    const [likeCount , setLikeCount] = useState(props.data.likes)
 
-   const [render , setRender]  = useState(false) //this is needed , this rerender componen once
+   const [render , setRender]  = useState(false) //this is needed , this rerender component once
    useEffect(() => {
 
       if(props.data.tags){
@@ -50,7 +30,41 @@ function SinglePost(props) {
 
    } , [])
   
+   const url = "http://localhost:4002/action/like"; // this wont change
 
+   async function likeIt(url , actionType , postId , postType){
+      try{
+         const res = await fetch(url ,{
+            method : 'POST',
+            headers: new Headers({'Content-Type': 'application/json'}),
+            body : JSON.stringify({
+               postId : postId , // or comment id name dont change either way
+               postType : postType , // post or comment , post in this case
+               actionType : actionType // like or dislike
+            })
+         });
+         console.log(res.status , "data" , res)
+         if(res.status === 403 && !res.ok){ 
+            return {
+               success : false,
+               redirect : true ,
+               authorized : false
+            }  
+         }else if(res.status == 400 && !res.ok){
+            throw new Error("invalid request")  
+         }
+         const data = await res.json();
+         console.log("data" , data);
+         return data ; // if all pass return original data
+      } catch(err) {
+      console.log("err" , err , "sended" , "failed to" , actionType)
+      throw new Error("failed to" + actionType);
+      }
+   
+   }
+   
+
+// parse data from mongo , and return month date and time //TODO make this return time ago...
 function dateParser(oldDate){
  
    let parse =  oldDate.split('-')
@@ -74,9 +88,14 @@ function dateParser(oldDate){
                console.log("res is good")
             
             setLikeCount(likeCount - 1)  
-            } else{
+            } else if(res.success == false && res.authorized == false && res.redirect == true){
                setLike(false) // this change only animation
-               console.log("res is bad")
+               console.log("res is bad , unauthorized")
+               // popup here
+               props.setPopup(true)
+            } else {
+               setLike(false)
+               console.log("res is just bad");
             }  
           
           } else { 
@@ -87,9 +106,14 @@ function dateParser(oldDate){
                console.log("res is good") 
 
                setLikeCount(likeCount + 1) 
-             }else {
+             } else if(res.success == false && res.authorized == false && res.redirect == true) {
                setLike(true) // this change only animation
-               console.log("res is bad")
+               console.log("res is bad , unauthorized")
+               // popup here
+               props.setPopup(true)
+             } else {
+               console.log("res is just bad") 
+               setLike(true)
              }
             
           }

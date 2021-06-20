@@ -13,11 +13,13 @@ function App() {
 
    const [dataFromDashboard , sendDataToIndexThenToMain ] = useState([])  // from index and from MainPosts 
 
+   const [popup , setPopup] = useState(false); // this triger login popup , this is passed to SinglePost
+
    if(dataFromDashboard){console.log(dataFromDashboard , dataFromDashboard.length)}
 
           return (
               <div className='App'>
-                   <Header sendDataToIndexThenToMain={sendDataToIndexThenToMain} />
+                   <Header sendDataToIndexThenToMain={sendDataToIndexThenToMain} setPopup={setPopup} popup={popup} />
              {/* <Auth /> */}
                
             <Dashboard sendDataToIndexThenToMain={sendDataToIndexThenToMain} />
@@ -26,10 +28,10 @@ function App() {
 {/* problem is that e.g. '/al' route goes nowhere */}
           <Switch>  
           <Route exact path="/">  {/* '/' will be porfolio or docs */}    
-          <MainPosts dataFromDashboard={dataFromDashboard}/>
+          <MainPosts dataFromDashboard={dataFromDashboard} setPopup={setPopup} popup={popup}/>
           </Route>
           <Route exact path="/posts">  {/*  duplicate route */}    
-          <MainPosts dataFromDashboard={dataFromDashboard}/>
+          <MainPosts dataFromDashboard={dataFromDashboard} setPopup={setPopup} popup={popup}/>
           </Route>
           <Route exact path="/posts/all">  {/* duplicate route */}    
           <MainPosts dataFromDashboard={dataFromDashboard}/>
@@ -40,19 +42,22 @@ function App() {
                   <RenderRouter />  {/* this parse query string , and do stuff :) */}
                     
                   </Route>
-                    
+
+                  
+
+
                  <Route exact path='/posts/404'>
                   <h1>404 item not found</h1>
                 </Route>  
                 
-                  <Route exact path="/login">
-                  <h1>login route</h1>  {/* mock */}
+                  {/* <Route exact path="/login">
+                  <h1>login route</h1>  
 
                   </Route>
                   
                   <Route exact path="/register">
-                  <h1>register route</h1>  {/* mock */}
-                  </Route>
+                  <h1>register route</h1> 
+                  </Route> */}
 
                 <Route  path='/'>
                   <h1>404 that route dont exist</h1>
