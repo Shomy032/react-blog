@@ -10,7 +10,7 @@ function Tags(props) {
     
           return (
               <div className='tagsWraper'>
-              {props.all.map((e , i) => (
+              {props.all && props.all.map((e , i) => (
                                                             // TODO make this component hit route        
                 <Link to={`/posts/filter?tag=${e}`} //  this route is /posts/filter?tag={e.g html}
                 className="tag"
