@@ -1,20 +1,50 @@
+const { getNodeText } = require("@testing-library/react");
 const express = require("express");
 const router = express.Router();
 
 
-const { posts  } = require('./config') // get db collections
-
+const { posts , comment } = require('./config') // get db collections
+const { errorHandler  } = require('./errHandler');
 
 
 router.get(
   "/all",
-
-  async (req, res, next) => {
+  async (req, res) => {
     const all = await posts.find({}); // 2
     const sorted = all.sort((a, b) => b.likes - a.likes);
     res.status(200).json(sorted);
   }
 );
+
+const { getComments , ajv} = require("./schemas")
+router.get('/comments' , async (req , res , next) => {
+  
+  try {
+  //  console.log(getComments , req.body ,"2")
+    const validate = ajv.validate( getComments , req.body );
+    if(validate){
+    const { allCommentsIdArray , postId } = req.body ; 
+      
+   const get = await comment.find({ _id : { $in : allCommentsIdArray }  , commentedOn : postId })
+       
+// console.log("get ::" , get)
+ if(!get || get.length == 0){
+  throw new Error("there is no comments here");
+ }else {
+  res.status(200).json(get);
+ }
+    }else{
+      throw new Error("invalid schema")
+    }
+   
+  }catch(err){
+    next(err)
+  }
+    
+} , errorHandler );
+
+
+
 
 router.get("/:query", async (req, res) => {
   // search and return one or more or throw Error
@@ -131,6 +161,10 @@ router.get("/:query", async (req, res) => {
     res.status(404).json({ massage: err.message, success: false }); // dev
   }
 });
+
+
+
+
 
 module.exports = {
   postRouter: router,

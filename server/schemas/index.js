@@ -58,6 +58,14 @@ const schema = {
      additionalProperties: false
   }
 
+const getComments = {
+  properties: {
+    postId : { type : "string" },
+    allCommentsIdArray :  { type : "array" }
+   },
+    required: [  "postId" , "allCommentsIdArray" ],
+    additionalProperties: false
+}
 
 module.exports = {
     schema  : schema ,
@@ -65,5 +73,6 @@ module.exports = {
     commentSchema : commentSchema ,
     schemaLike : schemaLike ,
     schemaEdit : schemaEdit ,
+    getComments : getComments ,
     ajv : ajv
 }

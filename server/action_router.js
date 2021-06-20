@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 const jwt = require("jsonwebtoken");
+const { errorHandler } = require("./errHandler"); //1
 
 // log time and where request is comeing from
 // this is not needed remove if you want
@@ -481,6 +482,7 @@ router.post(
 
 // used at all routes in this file
 // middleware for validating jwt tokens
+// todo : export it from another file
 async function validateJwt(req, res, next) {
   try {
     const superSecret = process.env.SECRET;
@@ -511,16 +513,6 @@ async function validateJwt(req, res, next) {
   }
 }
 
-function errorHandler(err, req, res, next) {
- // console.log("there is err in last middleware", err);
-  if (err) {
-    res
-      .status(400)
-      .json({ message: err.message || "there is err", success: false });
-  } else {
-    res.sendStatus(500);
-  }
-} //todo add or remove
 
 module.exports = router;
 
