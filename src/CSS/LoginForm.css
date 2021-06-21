@@ -1,6 +1,94 @@
-.LoginForm {
+
+.LoginForm  {
+    width: 100%;
+
+    /* padding: 2rem;  */
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+
+.LoginForm link{
+margin: 0;
+
+color: crimson;
+text-decoration: underline;
+}
+
+
+
+.LoginForm .formLogin{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: column;
     
+
+     width: 100%; 
+   
 }
-.LoginForm  h1{
-    color: seagreen;
+
+ 
+.LoginForm .formLogin .wraper1 ,
+.LoginForm .formLogin .wraper2 {
+     width: 100%;
+
 }
+
+.LoginForm .formLogin .wraper2{
+    position: relative; 
+}
+
+
+.LoginForm .formLogin .wraper2 .passwordInput , 
+.LoginForm .formLogin  .wraper1 .emailInput {
+    width: 100%;
+    padding-left : 1rem ;
+
+    margin: 0.5rem 0;
+
+    height: 2rem;
+}
+
+
+.LoginForm .formLogin .wraper2 .eye{
+    position: absolute;
+    right: -2rem;
+    top: 50%;
+
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+.LoginForm .formLogin .submitButton{
+
+    background-color:  crimson;
+    color: white;
+    padding: 0.4rem 0.6rem ;
+
+    border-radius: 0.2rem;
+    border: none;
+    outline: none;
+    
+    margin: 0.2rem 0;
+    margin-bottom: 0.6rem;
+  
+    cursor: pointer;
+    transition: all 400ms linear;
+}
+.LoginForm .formLogin .submitButton:hover{
+    background-color: rgb(251, 7, 56);
+}
+.LoginForm .formLogin .loginError {
+   color: red;
+   text-decoration: none;
+   
+   font-size: 0.7rem;
+   cursor: default;
+}
+
+
+

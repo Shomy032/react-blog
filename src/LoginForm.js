@@ -10,14 +10,13 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 // examle at and of file
 
-const LoginForm = ({ setReset }) => {
+const LoginForm = ({ setRedirectToFinish }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [err, setErr] = useState(false);
   const [loading, setLoading] = useState(false);
 
   // move this po parent , and pass setRedirect here ;
-  const [redirect, setRedirect] = useState(false);
 
   const passwd = useRef(null);
   const [showPasswordState, setShowPasswordState] = useState(true);
@@ -48,8 +47,11 @@ const LoginForm = ({ setReset }) => {
         .then((data) => {
           if (data.success === true) {
             setErr(false);
-            setRedirect(true);
+            // redirect to new popup
+            setRedirectToFinish(true);
+            //  <Finish />
           } else {
+            setRedirectToFinish(false);
             throw new Error("error with response , login not accepted");
           }
         })
@@ -59,6 +61,7 @@ const LoginForm = ({ setReset }) => {
         });
     } else {
       setErr(true);
+      setLoading(false);
     }
   }
 
@@ -69,9 +72,7 @@ const LoginForm = ({ setReset }) => {
   const handleChangePassword = (e) => {
     setPassword(e.target.value);
   };
-  const handleStateForReset = () => {
-    setReset(true);
-  };
+ 
 
   const showPassword = () => {
     setShowPasswordState(!showPasswordState);
@@ -84,28 +85,22 @@ const LoginForm = ({ setReset }) => {
   };
 
   return loading ? (
-    <Loader
-      type="Puff"
-      color="#00BFFF"
-      width={60}
-      height={60}
-    />
+    <Loader type="Puff" color="#00BFFF" width={50} height={50} />
   ) : (
+    <>
     <div className="LoginForm">
-      <form onSubmit={handleSubmitLogin}>
-        <label>
-          Email :
-          <input
-            className="emailInput"
-            value={email}
-            onChange={handleChangeEmail}
-            name="email"
-            type="text"
-            placeholder="enter your email..."
-          />
-        </label>
-        <label>
-          Password :
+      <form className="formLogin" onSubmit={handleSubmitLogin}>
+        <div className="wraper1">
+        <input
+          className="emailInput"
+          value={email}
+          onChange={handleChangeEmail}
+          name="email"
+          type="text"
+          placeholder="enter your email..."
+        />
+      </div>
+        <div className="wraper2">
           <input
             ref={passwd}
             className="passwordInput"
@@ -115,14 +110,11 @@ const LoginForm = ({ setReset }) => {
             type="password"
             placeholder="enter your password..."
           />
-          <i class="fas fa-eye-slash" onClick={showPassword}></i>
-        </label>
+          <i class="fas fa-eye-slash eye" onClick={showPassword}></i>
+        </div>
         {err && (
           <p className="loginError">invalid credentials , please try again</p>
         )}
-        <p className="linkToResetPassword" onClick={handleStateForReset}>
-          forget your password?
-        </p>
         <button
           className="submitButton"
           type="submit"
@@ -130,13 +122,19 @@ const LoginForm = ({ setReset }) => {
         >
           submit
         </button>
+
+        
       </form>
+
+
     </div>
+
+      
+</>
   );
 };
 
 export default LoginForm;
-
 
 // <Loader
 //         type="Puff"
