@@ -58,9 +58,9 @@ const { schemaRegister ,  schema , ajv} = require('./schemas')
 router.post(
   "/register",
   async (req, res) => {
-    console.log(req)
+   // console.log(req)
 
-    console.log(req.headers, req.body, req.params, req.query);
+  //  console.log(req.headers, req.body, req.params, req.query);
     try {
       const valid = await ajv.validate(schemaRegister, req.body);
 
@@ -71,24 +71,33 @@ router.post(
         });
 
 
-
+// maybe check for length not like this
         if (!checkEmail && !checkUsername) {
 
+          if(req.body.password1 !== req.body.password2){
+            throw new Error("passwords are not the same")
+          }
           // todo : add here check for email verification
 
-          bcrypt.hash(req.body.password, 10, async function (err, hash) {
+          bcrypt.hash(req.body.password1, 10, async function (err, hash) {
             if (err) {
               throw new Error("problem with hash");
             } // just dev thing , remove in production
 
-            req.body.password = hash;
+        
+              const user = {
+                username : req.body.username ,
+                email : req.body.email ,
+                password : hash 
+              }
+
 
             //insert user to db
-            await users.insert(req.body);
+            await users.insert(user);
             // search again for his _id
             const data = await users.findOne({ email: req.body.email });
             const token = sighJWT(data);
-            // console.log(data , token)
+           
             res.cookie("access_token", token  ,{ httpOnly: true });
             res
               .status(200)

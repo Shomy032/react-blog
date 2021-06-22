@@ -32,9 +32,10 @@ const schema = {
     properties: {   
       username :  { type: "string" },
       email: { type: "string" },
-      password: { type: "string" },
+      password1: { type: "string" },
+      password2: { type: "string" },
     },
-    required: [ "email", "password" , "username"],
+    required: [ "email", "password1" , "password2" , "username"],
     additionalProperties: false,
 
 
