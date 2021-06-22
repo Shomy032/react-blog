@@ -27,6 +27,19 @@ const schema = {
     additionalProperties: false,
   };
 
+  schemaRegister = {
+
+    properties: {   
+      username :  { type: "string" },
+      email: { type: "string" },
+      password: { type: "string" },
+    },
+    required: [ "email", "password" , "username"],
+    additionalProperties: false,
+
+
+  }
+
 
   const commentSchema = {
     properties: {
@@ -68,6 +81,7 @@ const getComments = {
 
 module.exports = {
     schema  : schema ,
+    schemaRegister : schemaRegister ,
     postSchema : postSchema ,
     commentSchema : commentSchema ,
     schemaLike : schemaLike ,
