@@ -56,7 +56,7 @@ function Popup( { setPopup } ) {
         </div>
       ) : (
         <>
-          <RegisterForm />
+          <RegisterForm setRedirectToFinish={setRedirectToFinish} setUser={setUser} />
           <p className="link" onClick={() => setLoginPopup(!loginPopup)}>
             Alredy have account, click here to login
           </p>

@@ -33,7 +33,7 @@ const LoginForm = ({ setRedirectToFinish , setUser }) => {
       fetch(URL, {
         method: "POST",
         redirect: 'follow',
-        credentials: 'include',
+        credentials: 'include', // bug with corse , bcs we are in dev
         headers: new Headers({ "Content-Type": "application/json" }),
         body: JSON.stringify({
           email: email,
