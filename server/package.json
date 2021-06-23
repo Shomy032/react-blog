@@ -7,7 +7,7 @@
     "dev": "nodemon start.js",
     "test": "jest",
     "test:watch": "jest --watch",
-    "trace" : "node --trace-deprecation start.js"
+    "trace": "node --trace-deprecation start.js"
   },
   "keywords": [],
   "author": "",
@@ -20,7 +20,8 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "monk": "^7.3.4",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "path": "^0.12.7"
   },
   "devDependencies": {
     "jest": "^27.0.4",

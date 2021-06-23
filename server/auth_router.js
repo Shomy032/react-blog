@@ -15,23 +15,54 @@ router.use(cors({ origin: "http://localhost:3000" }) , (req, res, next) => {
 
 
 const { posts , blogs , users } = require('./config') // get db collections
-const { schema , ajv} = require('./schemas')
+const { schemaRegister ,  schema , ajv} = require('./schemas')
 
 
-// this is needed bcs retarded browser is sending preflight on fucking POST request , for some reason????????
-router.options("/register", function (req, res) {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-  res.header("Access-Control-Allow-Methods", "POST");
-  res.header("Access-Control-Allow-Headers", "*");
-  res.status(204).send("response from options"); //remove send in development
-});
+
+// router.options("/register", function (req, res) {
+//   res.set("Access-Control-Allow-Origin", "http://localhost:3000");
+//   res.set("Access-Control-Allow-Methods", "POST");
+//   res.set("Access-Control-Allow-Headers", "*");
+//   res.status(204).send() ; //remove send in development
+// });
+
+// router.options("/login" , function (req, res){
+//   // console.log(req)
+ 
+//    res.append("Access-Control-Allow-Credentials" ,  true)
+//    res.append("Access-Control-Allow-Headers", "*");
+  
+//    console.dir()
+//   // console.log(res)
+//    res.status(204).end()
+ 
+//    console.dir(res.headersSent) 
+//  })
+ 
+// router.options("/login" , (req , res , next) =>{
+
+// console.log('router use :::')
+
+//   res.append("Access-Control-Expose-Headers", "ETag");
+//   res.append('Access-Control-Allow-Methods', 'GET, POST');
+//   res.append('Access-Control-Allow-Headers', 'Content-Type');
+
+// console.log( "response from router.use ::: " , res )
+
+//   res.sendStatus(203);
+// })
+
+
+
 
 router.post(
   "/register",
   async (req, res) => {
-    console.log(req.headers, req.body, req.params, req.query);
+   // console.log(req)
+
+  //  console.log(req.headers, req.body, req.params, req.query);
     try {
-      const valid = await ajv.validate(schema, req.body);
+      const valid = await ajv.validate(schemaRegister, req.body);
 
       if (valid) {
         const checkEmail = await users.findOne({ email: req.body.email });
@@ -40,25 +71,34 @@ router.post(
         });
 
 
-
+// maybe check for length not like this
         if (!checkEmail && !checkUsername) {
 
+          if(req.body.password1 !== req.body.password2){
+            throw new Error("passwords are not the same")
+          }
           // todo : add here check for email verification
 
-          bcrypt.hash(req.body.password, 10, async function (err, hash) {
+          bcrypt.hash(req.body.password1, 10, async function (err, hash) {
             if (err) {
               throw new Error("problem with hash");
             } // just dev thing , remove in production
 
-            req.body.password = hash;
+        
+              const user = {
+                username : req.body.username ,
+                email : req.body.email ,
+                password : hash 
+              }
+
 
             //insert user to db
-            await users.insert(req.body);
+            await users.insert(user);
             // search again for his _id
             const data = await users.findOne({ email: req.body.email });
             const token = sighJWT(data);
-            // console.log(data , token)
-            res.cookie("access_token", token, { httpOnly: true });
+           
+            res.cookie("access_token", token  ,{ httpOnly: true });
             res
               .status(200)
               .json({
@@ -83,16 +123,19 @@ router.post(
 );
 
 
+
 router.post(
     "/login",
+    
 
     async (req, res) => {
+      console.log(req)
       // todo : remove validating jwt
       try {
         // console.log(req.body)
-        console.log(schema , req.body)
+       // console.log(schema , req.body)
         const valid = await ajv.validate(schema, req.body);
-        console.log(valid , 'valid')
+      //  console.log(valid , 'valid')
         // console.log('valid' ,  valid)
         if (valid) {
           // 1. lvl deep
@@ -100,18 +143,18 @@ router.post(
           const check = await users.findOne({ email: req.body.email });
           // console.log('data' , check)
   
-          if (!check) {
+          if (!check) { // maybe // check.length !== 0 ;
             throw new Error("there is no user with that email in db");
           }
           if (check) {
-            // 2. lvl deep
+            // 2. 
             const match = await bcrypt.compare(req.body.password, check.password);
   
             // if we have match allow login if not throw err
             if (match) {
 
               const token = sighJWT(check);
-              res.cookie("access_token", token, { httpOnly: true });
+              res.cookie("access_token", token  , { httpOnly: true });
 
               res
                 .status(200)
@@ -121,7 +164,7 @@ router.post(
                   username: check.username,
                 });
             } else {
-              // 3. lvl deep
+              // 3. 
               // console.log('we have no match')
               throw new Error("invalid credentials");
             }

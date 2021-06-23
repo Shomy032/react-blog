@@ -3,12 +3,11 @@ const ajv = new Ajv();
 
 //schema for login for now , todo : remove username requirment , and hash password
 const schema = {
-    properties: {
-      username: { type: "string" }, //todo : remove it later , dont need name for login
+    properties: {   
       email: { type: "string" },
       password: { type: "string" },
     },
-    required: ["username", "email", "password"],
+    required: [ "email", "password"],
     additionalProperties: false,
   };
 
@@ -27,6 +26,20 @@ const schema = {
     required: ["name", "text" ],
     additionalProperties: false,
   };
+
+  schemaRegister = {
+
+    properties: {   
+      username :  { type: "string" },
+      email: { type: "string" },
+      password1: { type: "string" },
+      password2: { type: "string" },
+    },
+    required: [ "email", "password1" , "password2" , "username"],
+    additionalProperties: false,
+
+
+  }
 
 
   const commentSchema = {
@@ -69,6 +82,7 @@ const getComments = {
 
 module.exports = {
     schema  : schema ,
+    schemaRegister : schemaRegister ,
     postSchema : postSchema ,
     commentSchema : commentSchema ,
     schemaLike : schemaLike ,

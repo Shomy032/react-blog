@@ -17,9 +17,17 @@ const cors = require("cors");
 
 app.use(cors( { origin: "http://localhost:3000" } )) // use cors for react dev server
 
+const path = require('path');
 
 
+app.use( express.static(path.join(__dirname , 'build')));
+// app.get("/" , (req , res , next) => {
+//   res.status(200).sendFile('/index.html');
+// })
 
+app.get('/', (req, res) => {
+  res.status(200).sendFile(path.join(__dirname, 'build', 'index.html'));
+})
 
 
 app.get(
