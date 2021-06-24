@@ -50,6 +50,14 @@ const schema = {
     required: [ "text" , 'postedOnId' ],
     additionalProperties: false,
   };
+  const getAllCommentsSchema = {
+    properties: {
+      postId : { type : "string" }
+    },
+    required: [  'postId' ],
+    additionalProperties: false,
+  }
+
 
   const schemaLike = {
     properties: {
@@ -88,5 +96,6 @@ module.exports = {
     schemaLike : schemaLike ,
     schemaEdit : schemaEdit ,
     getComments : getComments ,
+    getAllCommentsSchema : getAllCommentsSchema ,
     ajv : ajv
 }

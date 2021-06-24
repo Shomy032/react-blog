@@ -1,3 +1,162 @@
+
+
+
 .OneFullPost{
+    width: 70%;
+margin: 2rem auto;
+padding: 2rem;
+
+    border-left: 1.5px solid rgb(182, 182, 182);
+    border-right: 1.5px solid rgb(182, 182, 182);
+
+    min-height: 100vh;
     
+}
+
+.OneFullPost .likes {
+width: 100px;
+display: flex;
+align-items: center;
+align-content: space-between;
+
+padding: 0;
+margin: 0 ;
+
+cursor: pointer;
+}
+.OneFullPost .likes p  , 
+.OneFullPost .likes i {
+    margin : 0.3rem ;
+
+    color: rgb(44, 44, 44);
+}
+
+.OneFullPost .likes i{
+    font-size: 1.5rem;
+    color: rgb(44, 44, 44);
+}
+
+.OneFullPost .wraperOneFullPost{
+    display: flex;
+    align-items: flex-start;
+justify-content: space-between;
+width: 100%;
+
+border-bottom: 2px solid rgb(182, 182, 182);
+}
+
+.OneFullPost .wraperOneFullPost h1 {
+    width: 80%;
+    max-width: 80%;
+
+    padding: 0;
+    margin: 0;
+  
+    font-size: 1.7rem;
+
+    color: rgb(44, 44, 44);
+}
+.OneFullPost .wraperOneFullPost p {
+    font-size: 1.5rem;
+    color: rgb(44, 44, 44);
+}
+
+.OneFullPost .wraperOneFullPost h1 .edited{
+    font-size: 1.1rem;
+
+    margin: 0 1rem;
+    color: rgb(44, 44, 44);
+}
+
+.OneFullPost  h2 {
+    font-size: 1rem;
+    margin: 1.2rem 0;
+
+    font-weight: 400;
+
+    border-bottom: 2px solid rgb(182, 182, 182);
+    padding-bottom: 1rem;
+    color: rgb(44, 44, 44);
+}
+
+.OneFullPost  p {
+    font-size: 1rem;
+    margin: 1.2rem 0;
+
+    font-weight: 400;
+    color: rgb(44, 44, 44);
+}
+
+.OneFullPost .OneFullPostAuthor .authorInfo{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    margin: 1rem 0;
+   
+}
+
+.OneFullPost .OneFullPostAuthor .authorInfo p {
+    padding: 0;
+    margin: 0;
+    
+    margin: 0 0.5rem;
+    color: rgb(44, 44, 44);
+}
+
+.OneFullPost .OneFullPostAuthor .authorInfo{
+    border-bottom: 2px solid rgb(182, 182, 182);
+
+    padding-bottom: 0.5rem;
+
+    width: 20%;
+}
+
+.OneFullPost .commentInfo .numberOfComments{
+   
+
+    display: flex;
+    justify-content: start;
+    align-items: center;
+
+}
+.OneFullPost .commentInfo .numberOfComments > * {
+margin: 0 0.4rem;
+color: rgb(44, 44, 44);
+}
+
+.OneFullPost .commentInfo{
+    border-bottom: 2px solid rgb(182, 182, 182);
+    padding-bottom: 0.7rem;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 30%;
+    margin: 0 auto;
+}
+
+.OneFullPost .commentInfo .addCommentBtn {
+    box-sizing: border-box;
+padding: 0.5rem 1rem;
+background-color: rgb(111, 36, 141);
+
+border: 2px solid transparent;
+outline: none;
+
+color: white;
+border-radius: 1rem;
+
+cursor: pointer;
+transition: all 400ms ease;
+
+font-weight: 700;
+}
+
+.OneFullPost .commentInfo .addCommentBtn:hover{
+    background-color : transparent;
+    color: rgb(111, 36, 141);
+    border: 2px solid rgb(111, 36, 141);
+    font-weight: 700;
 }

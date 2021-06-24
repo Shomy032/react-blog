@@ -10,24 +10,25 @@ const morgan = require("morgan");
 app.use(morgan("tiny"));
 
 require("dotenv").config(); 
-const { posts , blogs } = require('./config') // get db collections
+const { posts , blogs , comment} = require('./config') // get db collections
 
 const cors = require("cors");
 
 
 app.use(cors( { origin: "http://localhost:3000" } )) // use cors for react dev server
 
-const path = require('path');
+// const path = require('path');
 
 
-app.use( express.static(path.join(__dirname , 'build')));
-// app.get("/" , (req , res , next) => {
-//   res.status(200).sendFile('/index.html');
+// app.use( express.static(path.join(__dirname , 'build')));
+// // app.get("/" , (req , res , next) => {
+// //   res.status(200).sendFile('/index.html');
+// // })
+
+// // *
+// app.get('/', (req, res) => {
+//   res.status(200).sendFile(path.join(__dirname, 'build', 'index.html'));
 // })
-
-app.get('/', (req, res) => {
-  res.status(200).sendFile(path.join(__dirname, 'build', 'index.html'));
-})
 
 
 app.get(
@@ -58,6 +59,42 @@ app.get(
     }
   }
 );
+// const errHandler = require("./errHandler");
+const  { getAllCommentsSchema , ajv } = require("./schemas")
+ const { errorHandler } = require('./errHandler')
+app.get("/getcomments" , async ( req , res , next ) => {
+
+  try {
+
+    const valid = await ajv.validate(getAllCommentsSchema , req.body)
+    if(!valid){
+      throw new Error('schema is invalid')
+    }
+    const commentsAll = await comment.find({ commentedOn : req.body.postId } ) 
+
+    if(commentsAll.length !== 0){
+      res.status(200).json({
+        success : true ,
+        comments : commentsAll 
+  
+      })
+    } else {
+      res.status(200).json({
+        success : false ,
+        comments : [] , 
+        message : "this post have no comments now"
+      })
+    }
+
+  } catch(err) {
+  next(err)
+  }
+
+  
+
+} , errorHandler )
+
+
 
 const authRoutes = require("./auth_router");
 app.use("/auth", authRoutes);
@@ -68,7 +105,8 @@ app.use("/action", actionRoutes); // fix it
 
 
 
-const { postRouter } = require('./posts_routes')
+const { postRouter } = require('./posts_routes');
+// const errHandler = require("./errHandler");
 app.use('/posts' , postRouter)
 
 

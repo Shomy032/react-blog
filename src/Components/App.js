@@ -18,16 +18,16 @@ import Dashboard from "./Dashboard";
 import ResetPassword from "./Authentication/ResetPassword.js";
 
 import RenderRouter from "./SinglePostPage/RenderRouter";
-
+import Popup from "./Authentication/Popup";
 
 function App() {
   const [dataFromDashboard, sendDataToIndexThenToMain] = useState([]); // from index and from MainPosts
 
   const [popup, setPopup] = useState(false); // this triger login popup , this is passed to SinglePost
 
-  if (dataFromDashboard) {
-    console.log(dataFromDashboard, dataFromDashboard.length);
-  }
+  // if (dataFromDashboard) {
+  //   console.log(dataFromDashboard, dataFromDashboard.length);
+  // }
 
   return (
     <div className="App">
@@ -39,7 +39,7 @@ function App() {
       {/* <Auth /> */}
 
       <Dashboard sendDataToIndexThenToMain={sendDataToIndexThenToMain} />
-
+      {popup && <Popup setPopup={setPopup}/>}
       
       {/* problem is that e.g. '/al' route goes nowhere */}
       <Switch>
@@ -66,7 +66,7 @@ function App() {
           <MainPosts dataFromDashboard={dataFromDashboard} />
         </Route>
         <Route path="/posts/:variable">
-          <RenderRouter />
+          <RenderRouter setPopup={setPopup}/>
         </Route>
         <Route exact path="/posts/404">
           <h1>404 item not found</h1>
@@ -87,6 +87,10 @@ function App() {
         </Route>
 
       </Switch>
+      
+    
+        
+    
     </div>
   );
 }

@@ -4,17 +4,17 @@ import OneFullPost from './OneFullPost'
 
 import "./../../CSS/RenderRouter.css"
 
-const RenderRouter = (  ) => {
+const RenderRouter = ( { setPopup } ) => {
 
 
     const [ comp , setComp ] = useState(null)
 
   let location = useLocation();
-    console.log('pathname location' , location.pathname);
-    console.log('all location' , location);
+   // console.log('pathname location' , location.pathname);
+   // console.log('all location' , location);
 
   let { variable } = useParams(); 
-  console.log('current variable' , variable)
+ // console.log('current variable' , variable)
 
  // let query = useQuery();
  // console.log('current query' , query)
@@ -34,6 +34,7 @@ const RenderRouter = (  ) => {
               }).then((res) =>{
              //   console.log(res)
                 if(res.ok){
+                  
               //    console.log('good response' , res.ok , res.status)
                  return  res.json() // parse
                 } else {
@@ -41,8 +42,9 @@ const RenderRouter = (  ) => {
                   throw new Error(`bad response ${res.status}`)
                 }
               }).then((data) => {
-            //    console.log(data) // remove
-                setComp( <OneFullPost data={data} /> )  
+                
+               
+                setComp( <OneFullPost data={data} setPopup={setPopup}/> )  
               }).catch((err) => {
             //    console.log(err) // remove
                 setComp(<Redirect to='/posts/404'/>) //todo makhe history.push()
@@ -50,19 +52,19 @@ const RenderRouter = (  ) => {
          } else {  setComp(<Redirect to='/posts/404'/>)  } // todo : throw custom err here
     break
     case "search" :
-      console.log('swith search')
+     // console.log('swith search')
     
       // set new componenet here that render search or filter result or 404
 
     break
     case "filter" :
-      console.log('swith filter') 
+     // console.log('swith filter') 
 
       // set new componenet here that render search or filter result or 404
       
     break 
     default :
-    console.log('non of the above')
+    //console.log('non of the above')
     setComp(<Redirect to='/posts/404'/>)
   }
  } , [variable])

@@ -1,6 +1,9 @@
-import React , {} from 'react';
+import React , {useState} from 'react';
 
 import "../../CSS/RegisterForm.css" ;
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "react-loader-spinner";
+
 
 const RegisterForm = ( { setRedirectToFinish  } ) => {
 
@@ -21,7 +24,7 @@ const RegisterForm = ( { setRedirectToFinish  } ) => {
     function handleSubmitLogin(event) {
       event.preventDefault();
       setLoading(true);
-      if (email && password) {
+      if (email && password1  && password2) {
         fetch(URL, {
           method: "POST",
           headers: new Headers({ "Content-Type": "application/json" }),

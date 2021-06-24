@@ -29,7 +29,7 @@ list-style-type: none;
     height: auto;
     width: 230px;
 
-    background-color: #fff;
+    background-color: black;
 }
 
 .Filter .singleFilter{
@@ -37,7 +37,7 @@ list-style-type: none;
     padding: 0.2rem 0.7rem;
 
    text-decoration: none;
-   background-color: lightcoral;
+   background-color: rgb(111, 36, 141);
     transition: all 300ms ease;
    cursor: pointer;
 
@@ -47,26 +47,50 @@ border-radius: 0.2rem;
 }
 
 .Filter .btn{
+transform: translateY(-12%);
 
-    
-  padding: 0.6rem 1.2rem;
- 
+
+outline: none;
+border: 2px solid transparent;
+
+  padding: 0.5rem 1.2rem;
+ border-radius: 1.2rem;
+ font-weight: 600;
+
+  background-color: rgb(111, 36, 141);
+ cursor: pointer;
+ transition: all 400ms ease;
+ color: white;
+
+ font-size: 1rem;
 }
+.Filter .btn:hover{
+    border: 2px solid rgb(111, 36, 141);
+    background-color: transparent;
+    color : rgb(111, 36, 141);
+}
+
 
 .Filter i{
     margin-left: 4rem;
     font-size: 1.5rem;
 
     padding: 1rem;
+    padding: 0;
+
+    transform: translateY(-25%);
+
+   cursor: pointer;
+    color: rgb(111, 36, 141);
 }
 .Filter .singleFilter:hover{
-    background-color: lightsalmon;
+    background-color: rgb(111, 36, 141);
 }
 
 
 .Filter .searchForFilters{
     width: 100%;
-   height: 1.5rem;
+   height: 2rem;
    margin: 1rem 0;
 
     /* position: absolute;
@@ -77,22 +101,61 @@ border-radius: 0.2rem;
     
 }
 
+.Filter .effectWraper {
+    position: relative;
+}
+.Filter .effect-8{
+    outline: none;
+    border: 1px solid #ccc;
+      transition: 0.4s;
+     }
+
+ .Filter .effect-8 ~ .focus-border:before,
+ .Filter .effect-8 ~ .focus-border:after{content: ""; position: absolute; top: 0; left: 0; width: 0; height: 2px; background-color: rgb(111, 36, 141); transition: 0.3s;}
+ .Filter .effect-8 ~ .focus-border:after{top: auto; bottom: 0; left: auto; right: 0;}
+ .Filter .effect-8 ~ .focus-border i:before,
+ .Filter .effect-8 ~ .focus-border i:after{content: ""; position: absolute; top: 0; left: 0; width: 2px; height: 0; background-color: rgb(111, 36, 141); transition: 0.4s;}
+ .Filter .effect-8 ~ .focus-border i:after{left: auto; right: 0; top: auto; bottom: 0;}
+ .Filter .effect-8:focus ~ .focus-border:before,
+ .Filter .effect-8:focus ~ .focus-border:after{width: 100%; transition: 0.3s;}
+ .Filter .effect-8:focus ~ .focus-border i:before,
+ .Filter .effect-8:focus ~ .focus-border i:after{height: 100%; transition: 0.4s;}
+
+
 .Filter .currentFilters{
      
     width: 100%;
 } 
 
 .wraper{
-    position: absolute;
+overflow: auto;
+
+    position: fixed ;
+    top: 0px;
+    right:0;
+   padding: 0 5rem;
+    height: 100vh ;
+    padding-top: 3rem;
+    /* position: absolute;
     left: 0;
-    top: 4rem;
+    top: 4rem; */
 
-    height: auto;
-    width: 100%;
+    /* height: auto; */
+    /* width: 100%; */
 
-    background-color: white;
+    background-color: black;
 
-    padding-left: 0.5rem;
+   
+}
+.wraper p ,
+.wraper > * {
+    color: white;
+}
+.fa-times {
+    z-index: 20;
+    position: fixed;
+    right: 4rem;
+    top : 1rem ;
 }
 
 .currentFilters p ,
