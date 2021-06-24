@@ -115,14 +115,21 @@ const removeTag = (event) => {
   
 : <button className='btn' onClick={setShowTrue}>show filters</button> }
     </>
-    <div className='wraper'>
-    {show && <form onSubmit={(e) => { 
+    {show && <div className='wraper'>
+    {show && <div className="effectWraper">
+      <form onSubmit={(e) => { 
       e.preventDefault() 
     }} > <input
     value={searchValue} 
     onChange={handleChange}
     placeholder='search for filter'
-    className='searchForFilters'/></form>}
+    className='searchForFilters effect-8'/></form>
+    <span class="focus-border">
+            	<i></i>
+            </span>
+    </div>
+    
+    }
     {show && <div
      className='currentFilters'>
        <p>current filters :</p>
@@ -142,7 +149,7 @@ const removeTag = (event) => {
   </ul>
   </div>
 }
- </div>
+ </div>}
 
  </div>
     )

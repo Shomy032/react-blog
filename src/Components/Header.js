@@ -70,7 +70,7 @@ useEffect(() => {
         </div> */}
       
         <div className='authLinks'>
-        <img src="./favicon.ico" alt="logo" />       {/* just testing logo */}  
+        <h1 className="logo">OverflowStack</h1>  
         {!loger && <div className='link' onClick={() => setPopup(true)} >Sing up</div> }
         {/* {!loger && <div className='link' onClick={() => setPopup(true)} >Register</div>}
         {loger && <div className='link' to="/logout">Logout</div>} */}

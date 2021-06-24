@@ -3,6 +3,7 @@ import "./../../CSS/OneFullPost.css";
 import Likes from "./../Likes.js";
 import AddComment from "./AddComment.js"
 import SingleComment from "./SingleComment.js"
+import Empty from "./Empty.js"
 
 const OneFullPost = ({ data, setPopup }) => {
   console.log()
@@ -101,7 +102,7 @@ const handleAddComment = () => {
         {comments.length !== 0 ?
           comments.map((element, index) => {
             return <SingleComment key={index} element={element} />;
-          }) : <h1>empty</h1>}
+          }) : <Empty />}
       </div>
     </div>
   );

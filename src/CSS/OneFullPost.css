@@ -6,8 +6,8 @@
 margin: 2rem auto;
 padding: 2rem;
 
-    border-left: 2px solid gray;
-    border-right: 2px solid gray;
+    border-left: 1.5px solid rgb(182, 182, 182);
+    border-right: 1.5px solid rgb(182, 182, 182);
 
     min-height: 100vh;
     
@@ -27,10 +27,13 @@ cursor: pointer;
 .OneFullPost .likes p  , 
 .OneFullPost .likes i {
     margin : 0.3rem ;
+
+    color: rgb(44, 44, 44);
 }
 
 .OneFullPost .likes i{
     font-size: 1.5rem;
+    color: rgb(44, 44, 44);
 }
 
 .OneFullPost .wraperOneFullPost{
@@ -39,7 +42,7 @@ cursor: pointer;
 justify-content: space-between;
 width: 100%;
 
-border-bottom: 2px solid gray;
+border-bottom: 2px solid rgb(182, 182, 182);
 }
 
 .OneFullPost .wraperOneFullPost h1 {
@@ -50,15 +53,19 @@ border-bottom: 2px solid gray;
     margin: 0;
   
     font-size: 1.7rem;
+
+    color: rgb(44, 44, 44);
 }
 .OneFullPost .wraperOneFullPost p {
     font-size: 1.5rem;
+    color: rgb(44, 44, 44);
 }
 
 .OneFullPost .wraperOneFullPost h1 .edited{
     font-size: 1.1rem;
 
     margin: 0 1rem;
+    color: rgb(44, 44, 44);
 }
 
 .OneFullPost  h2 {
@@ -67,8 +74,9 @@ border-bottom: 2px solid gray;
 
     font-weight: 400;
 
-    border-bottom: 2px solid gray;
+    border-bottom: 2px solid rgb(182, 182, 182);
     padding-bottom: 1rem;
+    color: rgb(44, 44, 44);
 }
 
 .OneFullPost  p {
@@ -76,6 +84,7 @@ border-bottom: 2px solid gray;
     margin: 1.2rem 0;
 
     font-weight: 400;
+    color: rgb(44, 44, 44);
 }
 
 .OneFullPost .OneFullPostAuthor .authorInfo{
@@ -92,10 +101,11 @@ border-bottom: 2px solid gray;
     margin: 0;
     
     margin: 0 0.5rem;
+    color: rgb(44, 44, 44);
 }
 
 .OneFullPost .OneFullPostAuthor .authorInfo{
-    border-bottom: 2px solid gray;
+    border-bottom: 2px solid rgb(182, 182, 182);
 
     padding-bottom: 0.5rem;
 
@@ -112,11 +122,11 @@ border-bottom: 2px solid gray;
 }
 .OneFullPost .commentInfo .numberOfComments > * {
 margin: 0 0.4rem;
-
+color: rgb(44, 44, 44);
 }
 
 .OneFullPost .commentInfo{
-    border-bottom: 2px solid gray;
+    border-bottom: 2px solid rgb(182, 182, 182);
     padding-bottom: 0.7rem;
 
     display: flex;

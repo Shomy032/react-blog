@@ -33,10 +33,18 @@ const handleSubmit = (e) => {
  return (     
 
   <form className='Search' onSubmit={handleSubmit}>
+
+<div className="inputWraper">
   <input type='text' 
   name='search' 
+  className="effect-8"
   placeholder='search for question...'
+  autocomplete="off" 
   value={value} onChange={handleChange}/>
+<span class="focus-border">
+            	<i></i>
+            </span>
+</div>
   <button type='submit' onSubmit={handleSubmit}>
   <i className='fas fa-search'/>
   </button>
