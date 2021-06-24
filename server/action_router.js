@@ -64,6 +64,7 @@ router.post(
           name: req.body.name,
           text: req.body.text,
           author: res.locals._id, // added from jwt
+          authorName : res.locals.user ,
           likes: 0,
           peopleLiked: [],
           date: new Date(),
