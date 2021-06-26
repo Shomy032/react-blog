@@ -15,7 +15,7 @@
 .LoginForm link{
 margin: 0;
 
-color: crimson;
+color: rgb(111, 36, 141);
 text-decoration: underline;
 }
 
@@ -28,7 +28,7 @@ text-decoration: underline;
     flex-direction: column;
     
 
-     width: 100%; 
+     width: 80%; 
    
 }
 
@@ -52,6 +52,9 @@ text-decoration: underline;
     margin: 0.5rem 0;
 
     height: 2rem;
+    background-color:#ffffff !important;
+    background: #ffffff !important;
+    outline: none;
 }
 
 
@@ -65,12 +68,13 @@ text-decoration: underline;
 }
 .LoginForm .formLogin .submitButton{
 
-    background-color:  crimson;
+    background-color:  rgb(111, 36, 141);
     color: white;
     padding: 0.4rem 0.6rem ;
 
-    border-radius: 0.2rem;
-    border: none;
+    border: 2px solid transparent;
+    border-radius: 1.6rem;
+    
     outline: none;
     
     margin: 0.2rem 0;
@@ -80,15 +84,26 @@ text-decoration: underline;
     transition: all 400ms linear;
 }
 .LoginForm .formLogin .submitButton:hover{
-    background-color: rgb(251, 7, 56);
+   
+    border: 2px solid rgb(111, 36, 141);
+    background-color: transparent;
+    color: rgb(111, 36, 141);  
+   
+ 
 }
+
+
 .LoginForm .formLogin .loginError {
-   color: red;
+   color: rgb(111, 36, 141);
    text-decoration: none;
    
    font-size: 0.7rem;
    cursor: default;
 }
+
+
+
+
 
 
 

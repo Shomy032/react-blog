@@ -39,12 +39,12 @@ margin: 0;
 
 display: flex;
 flex-direction: column;
-justify-content: space-evenly;
+justify-content: center;
 align-items: center;
 position: relative;
 
     width: 30%;
-    height: 30%;
+    height: 35%;
 margin: 0 auto;
     z-index: 13;
    background-color: white;
@@ -61,24 +61,42 @@ margin: 0 auto;
 font-size: 1rem;
 
     margin: 0;
-    padding: 0.5rem 0.8rem;
+    padding: 0.3rem 0.6rem;
     color: white;
 
-    border-radius: 0.2rem;
+    border: 2px solid transparent;
+    border-radius: 0.4rem;
     cursor: pointer;
 
-    background-color: crimson;
+    background-color: rgb(111, 36, 141);
         transition: all 400ms linear;
+        
 
 }
 .Popup .btnX:hover {
-    background-color: rgb(251, 7, 56);
+    border: 2px solid rgb(111, 36, 141);
+    background-color: transparent;
+    color: rgb(111, 36, 141);
 }
 
 
 .Popup .real p {
 margin :  0 ;
-color: crimson;
+color: rgb(111, 36, 141);
 text-decoration: underline;
 
+}
+
+.Popup .liksAuthSwitch{
+
+position: absolute;
+bottom: 1rem;
+}
+
+.Popup .formTitle{
+ position : absolute ;
+  top : 0.2rem ;
+  font-size: 1.7rem;
+
+  opacity: 0.8;
 }

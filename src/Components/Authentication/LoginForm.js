@@ -12,7 +12,7 @@ import Loader from "react-loader-spinner";
 // import Cookie from "./Classes/Cookie"
 
 
-const LoginForm = ({ setRedirectToFinish , setUser }) => {
+const LoginForm = ({ setRedirectToFinish , setUser , dispatch}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [err, setErr] = useState(false);
@@ -29,11 +29,13 @@ const LoginForm = ({ setRedirectToFinish , setUser }) => {
   function handleSubmitLogin(event) {
     event.preventDefault();
     setLoading(true);
+
+
+
     if (email && password) {
       fetch(URL, {
         method: "POST",
         redirect: 'follow',
-        credentials: 'include', // bug with corse , bcs we are in dev
         headers: new Headers({ "Content-Type": "application/json" }),
         body: JSON.stringify({
           email: email,
@@ -44,20 +46,7 @@ const LoginForm = ({ setRedirectToFinish , setUser }) => {
           console.log("res" , res)
           setLoading(false);
           if (res.ok) {
-      //  const resToken =  res.headers.get('Set-Cookie');
-      //  const resToken1 =  res.headers.get('Set-Cookie');
-        
-      //   console.log('all header keys')
-      //   for(var key of res.headers.keys()) {
-      //     console.log(key);
-      //  }
-      //  console.log('all header keys end')
-
-        // console.log(resToken ,"0")
-        // console.log(resToken1 , "1")
-        // console.log(resToken === null)
-        // console.log(resToken1 === null)
-
+     
             setErr(false);
             return res.json();
           } else {
@@ -67,8 +56,8 @@ const LoginForm = ({ setRedirectToFinish , setUser }) => {
         .then((data) => {
           if (data.success === true) {
           // const token = new Cookie("") //c
-
-          console.log(data , "data")
+          dispatch({title : "normal"})
+         // console.log(data , "data")
             setUser(data.username)   
             setErr(false);
           
