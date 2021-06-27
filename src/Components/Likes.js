@@ -29,7 +29,7 @@ const Likes = ({  data , setPopup }) => {
                redirect : true ,
                authorized : false
             }  
-         }else if(res.status == 400 && !res.ok){
+         }else if(res.status === 400 && !res.ok){
             throw new Error("invalid request")  
          }
          const data = await res.json();
@@ -49,11 +49,11 @@ const Likes = ({  data , setPopup }) => {
         //   console.log('like')                          
            const res =  await likeIt(url  , "like" , data._id , "post") // post or comment , post in this case
         //   console.log(res , "res in if (like)") 
-              if(res.success == true){
+              if(res.success === true){
               //   console.log("res is good")
               
               setLikeCount(likeCount - 1)  
-              } else if(res.success == false && res.authorized == false && res.redirect == true){
+              } else if(res.success === false && res.authorized === false && res.redirect === true){
                  setLike(false) // this change only animation
               //   console.log("res is bad , unauthorized")
                  // popup here
@@ -67,11 +67,11 @@ const Likes = ({  data , setPopup }) => {
                console.log('dislike')                             
              const res =  await likeIt(url  , "dislike" , data._id , "post")// post or comment , post in this case
                console.log(res , "res in else (!like) !!!!")
-               if(res.success == true){
+               if(res.success === true){
                  console.log("res is good") 
   
                  setLikeCount(likeCount + 1) 
-               } else if(res.success == false && res.authorized == false && res.redirect == true) {
+               } else if(res.success === false && res.authorized === false && res.redirect === true) {
                  setLike(true) // this change only animation
                  console.log("res is bad , unauthorized")
                  // popup here

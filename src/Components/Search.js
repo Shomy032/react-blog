@@ -37,9 +37,9 @@ const handleSubmit = (e) => {
 <div className="inputWraper">
   <input type='text' 
   name='search' 
-  className="effect-8"
+  class="effect-8"
   placeholder='search for question...'
-  autocomplete="off" 
+  autoComplete="off" 
   value={value} onChange={handleChange}/>
 <span class="focus-border">
             	<i></i>

@@ -26,7 +26,7 @@ return {title : ""}
 //<ReducerContext.Provider value={[formReducer , dispatch ]}> 
 // </ReducerContext.Provider>
 
-function Popup( { setPopup } ) {
+function Popup( { setPopup , setLoger } ) {
   // TODO  PASS THIS setPopup , to login and register button in header
 
   // switch between login and register
@@ -78,7 +78,7 @@ const [title , setTitle] = useState("Register");
       // dispatch({ type: "login" })
       return loginPopup ? (
         <>
-          <LoginForm dispatch={dispatch} setRedirectToFinish={setRedirectToFinish} setUser={setUser}/>
+          <LoginForm setLoger={setLoger} dispatch={dispatch} setRedirectToFinish={setRedirectToFinish} setUser={setUser}/>
           <div className="liksAuthSwitch">
           <p className="link" onClick={() =>{
            dispatch({type : "register"})   
@@ -96,7 +96,7 @@ const [title , setTitle] = useState("Register");
         </>
       ) : (
         <>
-          <RegisterForm dispatchPopup={dispatch} setRedirectToFinish={setRedirectToFinish} setUser={setUser} />
+          <RegisterForm setLoger={setLoger} dispatchPopup={dispatch} setRedirectToFinish={setRedirectToFinish} setUser={setUser} />
           <div className='liksAuthSwitch'>
           <p className="link" onClick={() =>{
       dispatch({type : "login"}) 

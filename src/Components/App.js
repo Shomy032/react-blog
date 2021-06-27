@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "../CSS/App.css";
 
 import Header from "./Header";
@@ -6,16 +6,12 @@ import MainPosts from "./MainPosts";
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link,
-  useParams,
-  useRouteMatch,
-  useLocation,
-  Redirect,
+  Route
+ 
 } from "react-router-dom";
 import Dashboard from "./Dashboard";
 
-import ResetPassword from "./Authentication/ResetPassword.js";
+
 
 import RenderRouter from "./SinglePostPage/RenderRouter";
 import Popup from "./Authentication/Popup";
@@ -24,7 +20,7 @@ function App() {
   const [dataFromDashboard, sendDataToIndexThenToMain] = useState([]); // from index and from MainPosts
 
   const [popup, setPopup] = useState(false); // this triger login popup , this is passed to SinglePost
-
+  const [loger, setLoger] = useState(false); // todo : make this use context
   // if (dataFromDashboard) {
   //   console.log(dataFromDashboard, dataFromDashboard.length);
   // }
@@ -35,11 +31,13 @@ function App() {
         sendDataToIndexThenToMain={sendDataToIndexThenToMain}
         setPopup={setPopup}
         popup={popup}
+        setLoger={setLoger}
+        loger={loger}
       />
       {/* <Auth /> */}
 
       <Dashboard sendDataToIndexThenToMain={sendDataToIndexThenToMain} />
-      {popup && <Popup setPopup={setPopup}/>}
+      {popup && <Popup setPopup={setPopup} setLoger={setLoger}/>}
       
       {/* problem is that e.g. '/al' route goes nowhere */}
       <Switch>

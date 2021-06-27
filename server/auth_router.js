@@ -97,8 +97,8 @@ router.post(
             // search again for his _id
             const data = await users.findOne({ email: req.body.email });
             const token = sighJWT(data);
-           
-            res.cookie("access_token", token  ,{ httpOnly: true });
+// experimental cookies not tested jet           
+            res.cookie("access_token", token  ,{ httpOnly: true , overwrite : true , sameSite : true , path : "/"});
             res
               .status(200)
               .json({
@@ -154,7 +154,8 @@ router.post(
             if (match) {
 
               const token = sighJWT(check);
-              res.cookie("access_token", token  , { httpOnly: true });
+              // experimental cookies not tested jet
+              res.cookie("access_token", token  , { httpOnly: true , overwrite : true , sameSite : true , path : "/"});
 
               res
                 .status(200)

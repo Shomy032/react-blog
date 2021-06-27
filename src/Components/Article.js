@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../CSS/Article.css";
 import ArticleDescription from "./ArticleDescription";
-import { BrowserRouter as Router, Switch, Route, Link , useParams , useRouteMatch } from "react-router-dom";
+import { BrowserRouter as Router , useParams  } from "react-router-dom";
 
 function Article(props) {
   let [values, setValues] = useState([]);

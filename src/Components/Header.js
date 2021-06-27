@@ -5,8 +5,8 @@ import Search from './Search'
 import Filter from './Filter'
 
 
-function Header( { sendDataToIndexThenToMain  , setPopup } ) {
-  const [loger, setLoger] = useState(false); // todo : make this use context
+function Header( { sendDataToIndexThenToMain  , setPopup , setLoger , loger } ) {
+  
 
 
   const [filters , addFilters ] = useState([]) // his is for child component // Filter
@@ -71,15 +71,20 @@ useEffect(() => {
       
         <div className='authLinks'>
         <h1 className="logo">OverflowStack</h1>  
-        {!loger && <div className='link' onClick={() => setPopup(true)} >Sing up</div> }
+        {!loger ? <div className='link' onClick={() => setPopup(true)} >Sing up</div> : 
+         <div className="userInfo">
+         <Link to="/userprofile">{true ? "username1" : "username2"}</Link>
+      
+        </div>}
         {/* {!loger && <div className='link' onClick={() => setPopup(true)} >Register</div>}
         {loger && <div className='link' to="/logout">Logout</div>} */}
         </div>
 
   {/* // setResData in Dashboard todo :: */}
-          <div className='wraperHeader' style={{ display : 'flex' , width : 'auto'  }}>
-
+          <div className='wraperHeader' >
+            
          <Search setResData={ setResData }/> 
+        
          <Filter addFilters={ addFilters } />  
        
        { red }

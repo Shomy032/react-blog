@@ -12,7 +12,7 @@ import Loader from "react-loader-spinner";
 // import Cookie from "./Classes/Cookie"
 
 
-const LoginForm = ({ setRedirectToFinish , setUser , dispatch}) => {
+const LoginForm = ({ setRedirectToFinish , setUser , dispatch , setLoger}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [err, setErr] = useState(false);
@@ -55,14 +55,16 @@ const LoginForm = ({ setRedirectToFinish , setUser , dispatch}) => {
         })
         .then((data) => {
           if (data.success === true) {
+            console.log(data , "datadata")
           // const token = new Cookie("") //c
           dispatch({title : "normal"})
          // console.log(data , "data")
+         setLoger(true)
             setUser(data.username)   
             setErr(false);
           
             setRedirectToFinish(true);
-           
+            
 
           } else {
             setRedirectToFinish(false);

@@ -9,9 +9,13 @@ function reducerRegister(state, action) {
   switch (action.type) {
     case "usernameLength":
       return { error: "username must be over 6 characters long" };
-    case "usernameForm":
-      return { error: "usernam cant start with number" };
-    case "usernameUnique":
+
+      case "usernameForm":
+      return { error: "username must start with alphabet character" };
+
+      case "longUsername":
+        return {error : "username must be shorter then 12 characters"};
+      case "usernameUnique":
       return { error: "sorry that username is not avalible" };
     case "passwordForm":
       return { error: "password must be minimum 6 characters long" };
@@ -32,13 +36,20 @@ function vlidateInput(username, email, password1, password2, dispatch) {
   const emailTest1 =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-  if (username.length < 6) {
+    
+    if (username.length < 6) {
     dispatch({ type: "usernameLength" });
     result = false;
-  } else if (typeof username[0] == "number") {
+    
+   // username cant start with /W or /d
+  } else if (/^[\W|\d]/.test(username)) {
     dispatch({ type: "usernameForm" });
     result = false;
-  } else if (password1 !== password2) {
+  }else if(username.length > 12){
+   dispatch({type : "longUsername"})
+    result = false ;
+  }
+   else if (password1 !== password2) {
     dispatch({ type: "passwordEqual" });
     result = false;
   } else if (password1.length < 6) {
@@ -52,7 +63,7 @@ function vlidateInput(username, email, password1, password2, dispatch) {
   return result;
 }
 
-const RegisterForm = ({ setRedirectToFinish , dispatchPopup }) => {
+const RegisterForm = ({ setUser , setRedirectToFinish , dispatchPopup  , setLoger }) => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password1, setPassword1] = useState("");
@@ -112,6 +123,8 @@ const RegisterForm = ({ setRedirectToFinish , dispatchPopup }) => {
             dispatchPopup({title : "normal"})
             setErr(false);
             setRedirectToFinish(true);
+            setLoger(true)
+            setUser(data.username)
           } else {
             setRedirectToFinish(false);
             throw new Error("error with response , login not accepted");
