@@ -55,20 +55,37 @@ const { resetCode } = require("./config") // db connection , its used also in ne
 const { errorHandler } = require('./errHandler')
 const { resetEmailSchema } = require('./schemas')
 router.post("/resetemail" , async (req , res , next) => {
-
+    console.log(req.body)
    try{
       const valid = await ajv.validate( resetEmailSchema , req.body )
       if(valid){
 const myRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ ;
          
-            if(!myRegex.test(req.body.email)){
+            if(myRegex.test(req.body.email)){
 
-            const userMailCheck = await users.find({email : req.body.email} , {email : 1})   
+            const userMailCheck = await users.find({email : req.body.email})   
             console.log("userMail" , userMailCheck) 
               if(userMailCheck.length !== 0){
-
+                const { MailSender } = require("./Classes")
                 // send verification email here , and store in db , my internet is dead soo i cant do it now
+                console.log(req.body ,"before sending")
 
+                  function makeCode(){
+                    let code = ""
+                    
+                      for(let i = 0 ; i < 6 ; i++){
+                        let verificationCodeMaker = Math.floor(Math.random() * 9)
+                        code += verificationCodeMaker.toString()
+                      }
+                    return code ;
+                  }
+
+                  let codeToSend = makeCode() ;
+
+                const mail =  new MailSender(req.body.email , "Hello , this is password reset email" , `your verification code : ${codeToSend}` ).sendMail() 
+                const adding = await resetCode.insert({ email : req.body.email , code : codeToSend , exp : Math.floor(Date.now() / 1000) })
+                console.log(adding ,  "adding")
+          
                 res.status(200).json({
                   success : true 
                 })
@@ -84,6 +101,7 @@ const myRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\
       }
 
    } catch(err) {
+     console.log(err)
      next(err)
    }
 
@@ -91,21 +109,30 @@ const myRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\
 
 
 const { resetEmailCode } = require("./schemas")
-router.post("resetcode" , async(req , res , next) => {
+router.post("/resetcode" , async(req , res , next) => {
 
   try {
       const valid = await ajv.validate(resetEmailCode , req.body)
       if(valid){
           if(req.body.code.length === 6){
       
-             const match = await resetCode.findOne({email : req.body.email , code : req.body.code})
-              if(match.length !== 0){
-                res.status(200).json({
-                  success : true , 
-                  message : "verification is successfull"
-                })
+             const match = await resetCode.find({email : req.body.email , code : req.body.code})
+             console.log(match , "match")
+
+              if(match.length == 0){ // there is 10 min to verify email
+                const cleanUp2 = await resetCode.remove({email : req.body.email , code : req.body.code} , {justOne : true}) 
+                console.log('cleanUp2' , cleanUp2)
+                 throw new Error("there is no code like that")
+            } else if((match.exp - Math.floor(Date.now / 1000)) > 600) { 
+              
+              throw new Error("code is expired , pls try again ( 10min )")
             } else {
-              throw new Error("there is no code like that")
+              res.status(200).json({
+                success : true , 
+                message : "verification is successfull"
+              })
+              const cleanUp1 = await resetCode.remove({email : req.body.email , code : req.body.code} , {justOne : true}) 
+              console.log("cleanUp" , cleanUp1)
             }
 
           }else {
@@ -122,7 +149,7 @@ router.post("resetcode" , async(req , res , next) => {
 
 
 
-})
+} , errorHandler )
 
 
 
