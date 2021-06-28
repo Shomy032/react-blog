@@ -1,5 +1,4 @@
 import React, { useReducer, useState } from "react";
-import { Link, Route, Switch } from "react-router-dom";
 import "../../CSS/Popup.css";
 import LoginForm from "./LoginForm.js";
 import RegisterForm from "./RegisterForm.js";
@@ -45,11 +44,11 @@ const [title , setTitle] = useState("Register");
     setPopup(false);
   };
 
-  const goBack = () => {
-    setReset(false);
-    setLoginPopup(true);
-    dispatch({ type: "login" })
-  };
+  // const goBack = () => {
+  //   setReset(false);
+  //   setLoginPopup(true);
+  //   dispatch({ type: "login" })
+  // };
 
   const handleReset = () => {
     setReset(true)
@@ -70,7 +69,7 @@ const [title , setTitle] = useState("Register");
       return (
         <>
           <ResetPassword />
-          <button onClick={goBack}>go back</button>
+          {/* <button className="goBackButton" onClick={goBack}>go back</button> */}
         </>
       );
     } else {

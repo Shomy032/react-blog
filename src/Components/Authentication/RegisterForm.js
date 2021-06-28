@@ -3,7 +3,7 @@ import React, { useState, useReducer } from "react";
 import "../../CSS/RegisterForm.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
-var Loader2 = require("react-loader");
+const Loader2 = require("react-loader");
 
 function reducerRegister(state, action) {
   switch (action.type) {
