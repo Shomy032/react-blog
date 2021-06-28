@@ -88,8 +88,27 @@ const getComments = {
     additionalProperties: false
 }
 
+const resetEmailSchema = {
+  properties: {
+    email : { type : "string" },
+   },
+    required: [  "email"  ],
+    additionalProperties: false
+}
+
+const resetEmailCode = {
+  properties: {
+    code : { type : "string" },
+    email : {type : "string"}
+   },
+    required: [  "code" , "email"  ],
+    additionalProperties: false
+}
+
 module.exports = {
     schema  : schema ,
+    resetEmailCode : resetEmailCode ,
+    resetEmailSchema : resetEmailSchema ,
     schemaRegister : schemaRegister ,
     postSchema : postSchema ,
     commentSchema : commentSchema ,

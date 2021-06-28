@@ -149,6 +149,7 @@ const ResetPassword = () => {
         headers: new Headers({ "Content-Type": "application/json" }),
         body: JSON.stringify({
           code: code,
+          email : email ,
         }),
       })
         .then((res) => {
