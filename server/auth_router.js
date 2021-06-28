@@ -51,7 +51,78 @@ const { schemaRegister ,  schema , ajv} = require('./schemas')
 
 //   res.sendStatus(203);
 // })
+const { resetCode } = require("./config") // db connection , its used also in next route
+const { errorHandler } = require('./errHandler')
+const { resetEmailSchema } = require('./schemas')
+router.post("/resetemail" , async (req , res , next) => {
 
+   try{
+      const valid = await ajv.validate( resetEmailSchema , req.body )
+      if(valid){
+const myRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ ;
+         
+            if(!myRegex.test(req.body.email)){
+
+            const userMailCheck = await users.find({email : req.body.email} , {email : 1})   
+            console.log("userMail" , userMailCheck) 
+              if(userMailCheck.length !== 0){
+
+                // send verification email here , and store in db , my internet is dead soo i cant do it now
+
+                res.status(200).json({
+                  success : true 
+                })
+              } else {
+              throw new Error("please enter valid email")
+              }
+        
+          } else {
+            throw new Error("there is no user with that email")  
+          }
+      } else {
+        throw new Error("invalid schema")
+      }
+
+   } catch(err) {
+     next(err)
+   }
+
+} , errorHandler )
+
+
+const { resetEmailCode } = require("./schemas")
+router.post("resetcode" , async(req , res , next) => {
+
+  try {
+      const valid = await ajv.validate(resetEmailCode , req.body)
+      if(valid){
+          if(req.body.code.length === 6){
+      
+             const match = await resetCode.findOne({email : req.body.email , code : req.body.code})
+              if(match.length !== 0){
+                res.status(200).json({
+                  success : true , 
+                  message : "verification is successfull"
+                })
+            } else {
+              throw new Error("there is no code like that")
+            }
+
+          }else {
+            throw new Error("code is not 6 diget long , exiting")  
+          }
+      }else {
+        throw new Error("schema is invalid")
+      }
+
+
+  } catch(err){
+    next(err)
+  }
+
+
+
+})
 
 
 

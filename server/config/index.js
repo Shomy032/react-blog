@@ -1,9 +1,15 @@
-const db = require("monk")("localhost:27017/blog"); // to add credentials
+// local mongo , losed it 3 times soo far
+// const db = require("monk")("localhost:27017/blog"); // to add credentials
+// mongo cluster , google cloud platform
+//const db = require("monk")("mongodb+srv://milos:desidesi123@myclustershomy.86e0h.mongodb.net/blog?retryWrites=true&w=majority")
+// not tested yet
+const db = require("monk")(process.env.CLUSTER)
 
 const blogs = db.get("blog-posts");
 const posts = db.get("posts");  
 const users = db.get("users");  
 const comment = db.get("comment");
+const resetCode = db.get("resetCode")
 
 const allFiltersYouHave = [
     "html",
@@ -69,6 +75,7 @@ const allFiltersYouHave = [
 
 
 module.exports = {
+  resetCode : resetCode ,
     posts : posts ,
     blogs : blogs ,
     users : users ,
