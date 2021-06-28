@@ -1,0 +1,17 @@
+
+
+versiob : '3'
+services:
+        web: 
+                build: .
+                ports:
+                        -"5000:5000"
+        db:
+                image : "mongodb" // change this            
+                environment :
+                        MY_PASSWORD : sadsfaf
+                volumes:
+                        - db-data:/foo
+
+volumes:
+        db-data:        
