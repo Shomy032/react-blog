@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef , useContext } from "react";
 // import { Link } from "react-router-dom";
 import "../../CSS/LoginForm.css";
 
@@ -10,7 +10,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 // examle at and of file
 // import Cookie from "./Classes/Cookie"
-
+import UserContext from "./../../Context/UserContext.js"
 
 const LoginForm = ({ setRedirectToFinish , setUser , dispatch}) => {
   const [email, setEmail] = useState("");
@@ -23,6 +23,7 @@ const LoginForm = ({ setRedirectToFinish , setUser , dispatch}) => {
   const passwd = useRef(null);
   const [showPasswordState, setShowPasswordState] = useState(true);
 
+  const { setLoger } = useContext(UserContext)
 
   const URL = "http://localhost:4002/auth/login";
 
@@ -58,9 +59,9 @@ const LoginForm = ({ setRedirectToFinish , setUser , dispatch}) => {
           // const token = new Cookie("") //c
           dispatch({title : "normal"})
          // console.log(data , "data")
-            setUser(data.username)   
+            setUser(data.username) 
+            setLoger(true)  
             setErr(false);
-          
             setRedirectToFinish(true);
            
 

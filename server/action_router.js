@@ -30,6 +30,7 @@ const { postSchema, commentSchema, ajv, schemaLike } = require("./schemas"); // 
 
 router.post(
   "/post",
+  validateJwt ,
   async (req, res, next) => {
     try {
       const valid = await ajv.validate(postSchema, req.body);
@@ -61,8 +62,8 @@ router.post(
         }
 
         let post = {
-          name: req.body.name,
-          text: req.body.text,
+          name: req.body.name || "sorry , there is no name...",
+          text: req.body.text || "sorry , there is no text...",
           author: res.locals._id, // added from jwt
           authorName : res.locals.user ,
           likes: 0,

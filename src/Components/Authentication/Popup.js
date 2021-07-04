@@ -25,7 +25,7 @@ return {title : ""}
 //<ReducerContext.Provider value={[formReducer , dispatch ]}> 
 // </ReducerContext.Provider>
 
-function Popup( { setPopup } ) {
+function Popup( { setPopup  } ) {
   // TODO  PASS THIS setPopup , to login and register button in header
 
   // switch between login and register
@@ -33,11 +33,12 @@ function Popup( { setPopup } ) {
   const [loginPopup, setLoginPopup] = useState(false);
   const [reset, setReset] = useState(false);
   const [redirectToFinish , setRedirectToFinish] = useState(false);
-  const [user , setUser] = useState("");
+  const [user1 , setUser] = useState("");
 
 const [state , dispatch] = useReducer( formReducer ,  {title : ""})
 
 const [title , setTitle] = useState("Register");
+
 
   const handleClick = () => {
    // console.log("click");
@@ -61,8 +62,9 @@ const [title , setTitle] = useState("Register");
           
 
   if(redirectToFinish){
-    return <Finish user={user}/> ;
-  } else {
+    return <Finish user={user1} /> ;
+  } 
+  else {
     if (reset) {
       // setTitle("Reset password")
     //    dispatch({ type: "reset" })
@@ -95,7 +97,7 @@ const [title , setTitle] = useState("Register");
         </>
       ) : (
         <>
-          <RegisterForm dispatchPopup={dispatch} setRedirectToFinish={setRedirectToFinish} setUser={setUser} />
+          <RegisterForm  dispatchPopup={dispatch} setRedirectToFinish={setRedirectToFinish} setUser={setUser} />
           <div className='liksAuthSwitch'>
           <p className="link" onClick={() =>{
       dispatch({type : "login"}) 

@@ -1,9 +1,20 @@
 import React, { useState, useReducer } from "react";
 import "../../CSS/ResetPassword.css";
+import ResetCodeFormPassword from "./ResetCodeFormPassword.js"
 const Loader = require("react-loader");
+
+
 
 const errorResetReducer = (state, action) => {
   switch (action.type) {
+    case "CustomError" :
+        return {
+            error: true,
+            errorMessage: "",
+            status: false,
+            newPassword : false ,
+             newPasswordIsAdded : false
+        }  ;
     case "invalidEmail":
       return {
         error: true,
@@ -59,6 +70,7 @@ const ResetPassword = () => {
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
   const [code, setCode] = useState("");
+  const [stateError , setStateError] = useState("")
   const [state, dispatch] = useReducer(errorResetReducer, {
     error: false,
     errorMessage: "",
@@ -105,19 +117,25 @@ const ResetPassword = () => {
         }),
       })
         .then((res) => {
-          if (res.ok) {
+            console.log(res , "res")
             setLoading(false);
+          
+            
             dispatch({ type: "responseGood" });
             return res.json();
-          } else {
-            throw new Error("res is not ok");
-          }
+         
         })
         .then((data) => {
           if (data.success) {
+            setStateError("")
             setLoading(false);
             dispatch({ type: "responseGood" });
-          }
+        } else {
+            dispatch({type : "CustomError"}) 
+            setLoading(false);
+            setStateError(data.message)
+        }
+
         })
         .catch((err) => {
           console.log(err);
@@ -180,7 +198,7 @@ const ResetPassword = () => {
 const  handleChangePassword1 = (event) => {
     setPassword1(event.target.value)
 }
-const  handleChangePassword1 = (event) => {
+const  handleChangePassword2 = (event) => {
     setPassword2(event.target.value)
 }
 
@@ -232,28 +250,12 @@ const handleSubmitNewPassword = (event) => {
           <button className="goBackButton" onSubmit={handleSubmitEmail}>
             submit
           </button>
-          {state.error && <p className="errorReset">{state.errorMessage}</p>}
+          {state.error && <p className="errorReset">{state.errorMessage || stateError}</p>}
         </form>
       ) : 
-      !state.newPassword ? <form onSubmit={handleSubmitCode}>
-          <p className="resetInfo">
-            Please check your email , we are sending you 6 diget code , please
-            enter it bellow
-          </p>
-          <input
-            className="inputResetCode"
-            value={code}
-            name="email"
-            placeholder="enter your code here..."
-            type="text"
-            autoComplete="off"
-            onChange={handleChangeCode}
-          />
-          <button className="goBackButton" onSubmit={handleSubmitCode}>
-            submit
-          </button>
-          {state.error && <p className="errorReset">{state.errorMessage}</p>}
-        </form>  : 
+      !state.newPassword ? 
+      <ResetCodeFormPassword stateError={stateError} code={code} handleSubmitCode={handleSubmitCode} handleChangeCode={handleChangeCode} state={state}/> 
+        : 
         <form onSubmit={handleSubmitNewPassword}>
             <input
             className="inputPassword1"
@@ -276,7 +278,7 @@ const handleSubmitNewPassword = (event) => {
           <button className="goBackButton" onSubmit={handleSubmitNewPassword}> //
             submit
           </button>
-          {state.error && <p className="errorReset">{state.errorMessage}</p>}
+          {state.error && <p className="errorReset">{state.errorMessage || stateError}</p>}
 
         </form>
       

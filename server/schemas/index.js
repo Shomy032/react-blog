@@ -105,6 +105,17 @@ const resetEmailCode = {
     additionalProperties: false
 }
 
+const schemaVerifyRegister  = {
+  properties: {
+    
+    code : { type : "string" },
+    email : { type : "string" }
+   },
+    required: [  "code" , "email"  ],
+    additionalProperties: false
+
+}
+
 module.exports = {
     schema  : schema ,
     resetEmailCode : resetEmailCode ,
@@ -116,5 +127,6 @@ module.exports = {
     schemaEdit : schemaEdit ,
     getComments : getComments ,
     getAllCommentsSchema : getAllCommentsSchema ,
+    schemaVerifyRegister : schemaVerifyRegister ,
     ajv : ajv
 }

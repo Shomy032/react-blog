@@ -1,18 +1,19 @@
-import React, { useState , useRef , useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route, Link , useParams , useRouteMatch, Redirect } from "react-router-dom";
+import React, { useState , useRef , useEffect , useContext } from "react";
+import { BrowserRouter as Router, useHistory , Switch, Route, Link , useParams , useRouteMatch, Redirect } from "react-router-dom";
 import '../CSS/Header.css'
 import Search from './Search'
 import Filter from './Filter'
-
+import UserContext from "./../Context/UserContext.js"
 
 function Header( { sendDataToIndexThenToMain  , setPopup } ) {
-  const [loger, setLoger] = useState(false); // todo : make this use context
-
+  
+  let history = useHistory();
 
   const [filters , addFilters ] = useState([]) // his is for child component // Filter
   const [resData , setResData ] = useState([])  // his is for child component // Search  
   const [red , setRed] = useState( null )
 
+  const {loger , setLoger} = useContext(UserContext)
   // console.log('current filters , rerendering' , filters , JSON.stringify(filters))
   
   let filterString = useRef('')
@@ -47,15 +48,17 @@ function Header( { sendDataToIndexThenToMain  , setPopup } ) {
 //[JSON.stringify(outcomes)]
 //[JSON.stringify(filters)]
 
-useEffect(() => {
-  if(resData instanceof Error){  // myError instanceof Error // true
-    console.log('err in use effect')
-    setRed( <Redirect to='/posts/404' />)
-  }
+// ???????????????
+
+// useEffect(() => {
+//   if(resData instanceof Error){  // myError instanceof Error // true
+//     console.log('err in use effect')
+//     setRed( <Redirect to='/posts/404' />)
+//   }
  
-//   console.log('resData is changing')
-// console.log(resData , 'resData is changing')
-} , [resData])
+// //   console.log('resData is changing')
+// // console.log(resData , 'resData is changing')
+// } , [resData])
 
 
 
@@ -71,7 +74,8 @@ useEffect(() => {
       
         <div className='authLinks'>
         <h1 className="logo">OverflowStack</h1>  
-        {!loger && <div className='link' onClick={() => setPopup(true)} >Sing up</div> }
+        {!loger ? <div className='link' onClick={() => setPopup(true)} >Sing up</div> : 
+        <div className='link' onClick={() => history.push("/profile")}>My Profile</div> }
         {/* {!loger && <div className='link' onClick={() => setPopup(true)} >Register</div>}
         {loger && <div className='link' to="/logout">Logout</div>} */}
         </div>

@@ -59,7 +59,7 @@ function dateParser(oldDate){
 {/* make this a component , likes*/}
 
                  <div className='comment'>
-                    <span>{`${12} comments`}</span> {/* hard coded */}
+                    <span>{`${data.comments.length} comments`}</span> {/* hard coded */}
                     <i className='fas fa-share'/>
 
                     <span>{dateParser(data.date)}</span>

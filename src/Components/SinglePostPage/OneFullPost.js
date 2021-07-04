@@ -5,6 +5,7 @@ import AddComment from "./AddComment.js"
 import SingleComment from "./SingleComment.js"
 import Empty from "./Empty.js"
 
+
 const OneFullPost = ({ data, setPopup }) => {
   console.log()
   const [comments, setComments] = useState([]);

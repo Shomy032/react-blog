@@ -1,5 +1,6 @@
 import React, { useState, useReducer } from "react";
 
+import VerificationCode from "./VerificationCode"
 import "../../CSS/RegisterForm.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
@@ -21,6 +22,8 @@ function reducerRegister(state, action) {
       return { error: "please enter valid email" };
     case "emailUse":
       return { error: "sorry , that email is alredy in use" };
+     case "CustomError" : 
+     return {error : ""} 
     default:
       return { error: "there is a error" };
   }
@@ -52,15 +55,15 @@ function vlidateInput(username, email, password1, password2, dispatch) {
   return result;
 }
 
-const RegisterForm = ({ setRedirectToFinish , dispatchPopup }) => {
+const RegisterForm = ({  setRedirectToFinish , dispatchPopup , setUser }) => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
 
-  const [err, setErr] = useState(false);
+  const [err, setErr] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const [redirectToCode , setRedirectToCode] = useState(false)
   // move this po parent , and pass setRedirect here ;
 
   const [state, dispatch] = useReducer(reducerRegister, { error: "" });
@@ -79,14 +82,13 @@ const RegisterForm = ({ setRedirectToFinish , dispatchPopup }) => {
       dispatch,
       setLoading
     );
-    console.log(check, "check");
+   // console.log(check, "check");
     if (!check) {
-      setErr(true);
+      setErr("there is an error");
       setLoading(false);
-    } else if (!check) {
-      setErr(false);
-    } else if (email && password1 && password2 && username) {
-      setErr(false);
+    }  else if (email && password1 && password2 && username) {
+      setErr("");
+      console.log("before fetch" , "to" , URL)
       fetch(URL, {
         method: "POST",
         headers: new Headers({ "Content-Type": "application/json" }),
@@ -98,32 +100,44 @@ const RegisterForm = ({ setRedirectToFinish , dispatchPopup }) => {
         }),
       })
         .then((res) => {
-          // console.log("res" , res)
+           console.log("res" , res)
           setLoading(false);
           if (res.ok) {
             setErr(false);
             return res.json();
           } else {
-            throw new Error("error with raw response");
+
+            return res.json();
           }
         })
         .then((data) => {
+          console.log("data" , data)
+          setLoading(false);
           if (data.success === true) {
-            dispatchPopup({title : "normal"})
+            
+            // set user here
+
+           // dispatchPopup( {title : "normal"} )
+           
             setErr(false);
-            setRedirectToFinish(true);
+            setUser(data.username)  
+            setRedirectToCode(true)
+           // setRedirectToFinish(true);
           } else {
+            
             setRedirectToFinish(false);
-            throw new Error("error with response , login not accepted");
+
+            setErr(data.message);
+            //throw new Error("error with response , login not accepted");
           }
         })
         .catch((err) => {
-          setErr(true);
-          console.log(err);
+          setErr("there is an err");
+         // console.log(err);
         });
     } else {
       dispatch({type : 'normal'})
-      setErr(true);
+      setErr("there is an err");
       // setLoading(false);
     }
   }
@@ -171,6 +185,9 @@ const RegisterForm = ({ setRedirectToFinish , dispatchPopup }) => {
       {/* <Loader type="Puff" color="#00BFFF" width={50} height={50} /> */}
     </>
   ) : (
+    redirectToCode ?
+    <VerificationCode setUser={setUser} setRedirectToFinish={setRedirectToFinish} email={email} setLoading={setLoading}/>
+    :
     <>
       <div className="RegisterForm">
         <form className="formRegister" onSubmit={handleSubmitLogin}>
@@ -210,7 +227,7 @@ const RegisterForm = ({ setRedirectToFinish , dispatchPopup }) => {
             placeholder="enter your password again..."
           />
 
-          {err && <p className="loginError">{state.error}</p>}
+          {err && <p className="loginError">{state.error || err}</p>}
           <button
             className="submitButton"
             type="submit"

@@ -1,12 +1,15 @@
 
 import React from "react"
+import "./../../CSS/Empty.css"
 
 const Empty = () => {
 
 
     return (
         <div className="Empty">
-<h1>empty</h1>
+            
+        <i className="far fa-folder-open" />
+        <p className="info">There is no comments now , be first one to post here...</p>
         </div>
     )
 }

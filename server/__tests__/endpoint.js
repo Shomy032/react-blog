@@ -50,7 +50,7 @@ async function call(path){
             res : res ,
         }
     } catch (err){
-        throw new Error(`jest is retarded :: ${err.message}`)
+        throw new Error(`ERORR ::: ${err.message}`)
     }}
 
 
@@ -67,15 +67,15 @@ async function call(path){
 
       })
      
-      // todo add more tests , and err handling tests
+      
   });
 
-  it('second test' , () =>{
-      let x = 3 , y = 2 , t = '' 
-      expect(x - y).toBe(1)
-      expect(x + y).toBe(5)
-      expect(t).toBeFalsy()
-  })
+  // it('second test' , () =>{
+  //     let x = 3 , y = 2 , t = '' 
+  //     expect(x - y).toBe(1)
+  //     expect(x + y).toBe(5)
+  //     expect(t).toBeFalsy()
+  // })
 
 
 

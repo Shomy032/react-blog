@@ -10,6 +10,7 @@ const posts = db.get("posts");
 const users = db.get("users");  
 const comment = db.get("comment");
 const resetCode = db.get("resetCode")
+const verifyEmail = db.get("verifyEmail")
 
 const allFiltersYouHave = [
     "html",
@@ -76,6 +77,7 @@ const allFiltersYouHave = [
 
 module.exports = {
   resetCode : resetCode ,
+  verifyEmail : verifyEmail ,
     posts : posts ,
     blogs : blogs ,
     users : users ,
