@@ -17,22 +17,31 @@ router.get(
 );
 
 const { getComments , ajv} = require("./schemas")
-router.get('/comments' , async (req , res , next) => {
+router.post('/comments' , async (req , res , next) => {
   
   try {
   //  console.log(getComments , req.body ,"2")
     const validate = ajv.validate( getComments , req.body );
     if(validate){
-    const { allCommentsIdArray , postId } = req.body ; 
-      
-   const get = await comment.find({ _id : { $in : allCommentsIdArray }  , commentedOn : postId })
+    const { postId } = req.body ; 
+      //allCommentsIdArray 
+    const getArrayOfComments = await posts.find({ _id : postId} , {comments : 1 , _id : 0}) ;
+
+if(getArrayOfComments.length == 0){
+throw new Error("there is no comments on this post")
+}
+  //console.log("getArrayOfComments" , getArrayOfComments)
+   const get = await comment.find({ _id : { $in : getArrayOfComments[0].comments }  , commentedOn : postId })
        
 // console.log("get ::" , get)
- if(!get || get.length == 0){
+ if( get.length == 0){
   throw new Error("there is no comments here");
  }else {
   res.status(200).json(get);
  }
+
+
+
     }else{
       throw new Error("invalid schema")
     }

@@ -81,10 +81,9 @@ const schema = {
 
 const getComments = {
   properties: {
-    postId : { type : "string" },
-    allCommentsIdArray :  { type : "array" }
+    postId : { type : "string" }
    },
-    required: [  "postId" , "allCommentsIdArray" ],
+    required: [  "postId"  ],
     additionalProperties: false
 }
 

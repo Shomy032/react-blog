@@ -9,24 +9,31 @@
 
 .MainPosts{
 margin: 0 auto;
+margin-top: 10rem;
 
 width: 90%;
-align-items: start;
-justify-content: space-around; /* maybe start ,soo that last element is not centered if num % 3 != 0 , will see */  
+
 
 display: flex;
-flex-direction: row;
+
 flex-wrap: wrap;
 
-min-height: 100vh;
+justify-content: space-around; 
+align-content : flex-start ;
+height: auto;
+min-height: 80vh;
 }
 .MainPosts .singlePost{
     padding-left: 1rem;  
     margin: 0.2rem 0;
     position: relative;
+    height: 100px;
 
 width: 33%;
-background-color: blueviolet; 
+border-radius: 0.5rem;
+background-color: black;
+box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+
 }
 .MainPosts .likes{
     position: absolute;
@@ -131,3 +138,10 @@ cursor: pointer;
     pointer-events: none;
 }
  
+
+.MainPosts .allPostsTitle{
+   position: absolute;
+   top: 7rem;
+   left: 50%;
+   transform: translateX(-50%);
+}

@@ -30,7 +30,7 @@ function App() {
   // if (dataFromDashboard) {
   //   console.log(dataFromDashboard, dataFromDashboard.length);
   // }
-const value = useMemo(() => ({loger, setLoger}) , [loger, setLoger])
+const value = useMemo(() => ({loger, setLoger , setPopup}) , [loger, setLoger])
 
 const url = "http://localhost:4002/auth/isThereUser"
 

@@ -54,7 +54,7 @@ function dateParser(oldDate){
 
 {/* make this a component , likes*/}
 
-                   <Likes data={data} setPopup={setPopup}/>
+                   <Likes type="post" data={data} setPopup={setPopup}/>
                  
 {/* make this a component , likes*/}
 

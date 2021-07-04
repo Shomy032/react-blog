@@ -7,6 +7,8 @@ import UserContext from "./../Context/UserContext.js"
 
 function Header( { sendDataToIndexThenToMain  , setPopup } ) {
   
+
+
   let history = useHistory();
 
   const [filters , addFilters ] = useState([]) // his is for child component // Filter
@@ -73,7 +75,7 @@ function Header( { sendDataToIndexThenToMain  , setPopup } ) {
         </div> */}
       
         <div className='authLinks'>
-        <h1 className="logo">OverflowStack</h1>  
+        <h1 className="logo" onClick={() => history.push("/")}>OverflowStack</h1>  
         {!loger ? <div className='link' onClick={() => setPopup(true)} >Sing up</div> : 
         <div className='link' onClick={() => history.push("/profile")}>My Profile</div> }
         {/* {!loger && <div className='link' onClick={() => setPopup(true)} >Register</div>}

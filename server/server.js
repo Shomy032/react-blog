@@ -13,33 +13,33 @@ require("dotenv").config();
 const { posts , blogs , comment} = require('./config') // get db collections
 
 const cors = require("cors");
-
+const path = require("path");
 
 app.use(cors( { origin: "http://localhost:3000" } )) // use cors for react dev server
 
 // const path = require('path');
 
 
-// app.use( express.static(path.join(__dirname , 'build')));
-// // app.get("/" , (req , res , next) => {
-// //   res.status(200).sendFile('/index.html');
-// // })
-
-// // *
-// app.get('/', (req, res) => {
-//   res.status(200).sendFile(path.join(__dirname, 'build', 'index.html'));
+app.use( express.static(path.join(__dirname , 'build')));
+// app.get("/" , (req , res , next) => {
+//   res.status(200).sendFile('/index.html');
 // })
 
-const { users } = require("./config")
-app.get("/testing" , async (req , res , next) => {
-
- const data = await  users.find({})
-
-  res.status(200).json({
-    success : true , 
-    data : data 
-  })
+// *
+app.get('/', (req, res) => {
+  res.status(200).sendFile(path.join(__dirname, 'build', 'index.html'));
 })
+
+// const { users } = require("./config")
+// app.get("/testing" , async (req , res , next) => {
+
+//  const data = await  users.find({})
+
+//   res.status(200).json({
+//     success : true , 
+//     data : data 
+//   })
+// })
 
 
 

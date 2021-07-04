@@ -1,0 +1,30 @@
+.SingleComment{
+    position: relative;
+
+    border: 1px solid black;
+    border-radius: 1rem;
+
+    margin: 0.5rem 0;
+    padding: 0 2rem;
+}
+.SingleComment .likes {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+.SingleComment .commentInfo {
+    display: flex;
+    align-items: center;
+    max-width: 200px;
+
+    position: absolute;
+    top: 0rem;
+    left: 1rem;
+    margin: 0;
+    padding: 0;
+}
+
+.SingleComment .commentText {
+    font-size: 1.4rem;
+}

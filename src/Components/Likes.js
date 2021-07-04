@@ -1,8 +1,8 @@
 import React , { useState } from "react";
 
-const Likes = ({  data , setPopup }) => {
+const Likes = ({  data , setPopup , type}) => {
 
-
+// type is String "post" or "comment"
 
     const [like , setLike]  = useState(false)
     const [likeCount , setLikeCount] = useState(data.likes)
@@ -18,7 +18,7 @@ const Likes = ({  data , setPopup }) => {
             credentials: 'same-origin' ,
             body : JSON.stringify({
                postId : postId , // or comment id name dont change either way
-               postType : postType , // post or comment , post in this case
+               postType : type , // post or comment , post in this case
                actionType : actionType // like or dislike
             })
          });
@@ -46,14 +46,14 @@ const Likes = ({  data , setPopup }) => {
         setLike(!like) // this change only animation
        try{
         if(!like){    
-        //   console.log('like')                          
+           console.log('like')                          
            const res =  await likeIt(url  , "like" , data._id , "post") // post or comment , post in this case
         //   console.log(res , "res in if (like)") 
               if(res.success == true){
               //   console.log("res is good")
-              
+              setLike(true)
               setLikeCount(likeCount - 1)  
-              } else if(res.success == false && res.authorized == false && res.redirect == true){
+              } else if(res.success == false && res.authorized == false ){
                  setLike(false) // this change only animation
               //   console.log("res is bad , unauthorized")
                  // popup here
@@ -66,12 +66,12 @@ const Likes = ({  data , setPopup }) => {
             } else { 
                console.log('dislike')                             
              const res =  await likeIt(url  , "dislike" , data._id , "post")// post or comment , post in this case
-               console.log(res , "res in else (!like) !!!!")
+             //  console.log(res , "res in else (!like) !!!!")
                if(res.success == true){
                  console.log("res is good") 
   
                  setLikeCount(likeCount + 1) 
-               } else if(res.success == false && res.authorized == false && res.redirect == true) {
+               } else if(res.success == false && res.authorized == false ) {
                  setLike(true) // this change only animation
                  console.log("res is bad , unauthorized")
                  // popup here

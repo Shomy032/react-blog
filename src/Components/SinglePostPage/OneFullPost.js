@@ -10,19 +10,20 @@ const OneFullPost = ({ data, setPopup }) => {
   console.log()
   const [comments, setComments] = useState([]);
 
-  
+
   const [like, setLike] = useState(false); // copy
   const [addComment, setAddComment] = useState(false); // copy
 
    
   useEffect(() => {
-    console.log("from use effect")
-    console.log("from use effect , data :::" , data)
-    fetch("http://localhost:4002/getcomments" , {
-      method : "GET" ,
+
+  console.log("data in use effect" , data)
+   
+    fetch("http://localhost:4002/posts/comments" , {
+      method : "POST" ,
       headers : new Headers({"Content-Type" : 'application/json'}),
       body : JSON.stringify({
-          postId : data._id
+        postId : data[0]._id
       })
     })
     .then((res) =>{
@@ -36,11 +37,11 @@ const OneFullPost = ({ data, setPopup }) => {
 
     } )
     .then((data) =>{
-      if(data.success){
+      if(data.length !== 0){
         console.log('setting comments')
-        console.log('setting comments' , data.comments)
+        console.log('setting comments' , data)
          console.log(data)
-        setComments(data.comments)
+        setComments(data)
       } else {
         console.log("no comments for this post")
         throw new Error("no comments for this post")
@@ -75,7 +76,7 @@ const handleAddComment = () => {
            {/* data[0].edited */}
           </h1>
           <div className="likes">
-            <Likes data={data[0]} setPopup={setPopup} />
+            <Likes type="post" data={data[0]} setPopup={setPopup} />
           </div>
         </div>
         <div className="authorInfo">

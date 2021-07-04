@@ -40,12 +40,12 @@ function MainPosts( { dataFromDashboard , setPopup , popup} ) {
     {/* to this conditionaly , posts or redirect */}
 { redirectState ? <Redirect to='/posts/404'/>  : 
 <div className="MainPosts">
-
-{values &&
+<h1 className="allPostsTitle">All Posts</h1>
+{values ?
   values.map((e , index) => {
   let parsedName = 'id?_id=' + e._id // making query string
    return <SinglePost key={index} data={e} parsedName={parsedName} setPopup={setPopup}/>
-  })}
+  }) : <h1>There is no posts here , be first one to post...</h1>}
      {dataFromDashboard.length !== 0 && 
      dataFromDashboard.map((e , index) => {
       let parsedNamee = 'id?_id=' + e._id // making query string
@@ -56,7 +56,7 @@ function MainPosts( { dataFromDashboard , setPopup , popup} ) {
 }  
      
    
-    <Footer data={values}/>
+    {/* <Footer data={values}/> */}
     </>
   );
 }

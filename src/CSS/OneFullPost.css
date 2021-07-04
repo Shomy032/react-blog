@@ -125,7 +125,7 @@ color: rgb(44, 44, 44);
 }
 
 .OneFullPost .commentInfo{
-    border-bottom: 2px solid rgb(182, 182, 182);
+    /* border-bottom: 2px solid rgb(182, 182, 182); */
     padding-bottom: 0.7rem;
 
     display: flex;
