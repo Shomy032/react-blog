@@ -118,7 +118,7 @@ const [title , setTitle] = useState("Register");
   return (
     <div className="Popup">
       <div className="real">
-        <h2 className="formTitle" >{state.title}</h2>
+        <h2 className="formTitle" >{ state.title || "Register" }</h2>
         <h2 className="btnX" onClick={handleClick}>X</h2>
 
         {/* return some jsx based on state logic */}
